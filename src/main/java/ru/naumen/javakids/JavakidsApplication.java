@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class JavakidslApplication {
+public class JavakidsApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(JavakidslApplication.class, args);
+		SpringApplication.run(JavakidsApplication.class, args);
 	}
 
 }
