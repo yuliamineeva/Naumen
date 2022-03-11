@@ -8,10 +8,10 @@
 		<version>2.6.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.example</groupId>
-	<artifactId>tutorial</artifactId>
+	<groupId>ru.naumen</groupId>
+	<artifactId>javakids</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>tutorial</name>
+	<name>javakids</name>
 	<description>Website for teaching programming to children</description>
 	<properties>
 		<java.version>11</java.version>
