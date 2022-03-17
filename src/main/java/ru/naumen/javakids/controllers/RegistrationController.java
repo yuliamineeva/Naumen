@@ -12,6 +12,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * @author avzhukov
+ * @since 17.03.2022
+ */
 @Controller
 public class RegistrationController {
     @Autowired
@@ -27,7 +31,7 @@ public class RegistrationController {
         User userFromDb = userRepo.findByUsername(user.getUsername());
 
         if (userFromDb != null) {
-            model.put("message", "User exists!");
+            model.put("message", "Пользователь уже существует!");
             return "registration";
         }
 
