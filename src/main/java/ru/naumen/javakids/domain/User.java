@@ -7,13 +7,16 @@ import javax.persistence.*;
 import java.util.Collection;
 import java.util.Set;
 
+/**
+ * @author avzhukov
+ * @since 17.03.2022
+ */
 @Entity
 @Table(name = "user_table")
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     private String username;
     private String password;
     private boolean active;

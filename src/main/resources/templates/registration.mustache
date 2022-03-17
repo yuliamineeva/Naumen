@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Registration</title>
+    <title>Регистрация</title>
 </head>
 <body>
-Add new user
+Добавить нового пользователя
 {{#message}}
     {{message}}
 {{/message}}
@@ -12,7 +12,7 @@ Add new user
     <div><label> User Name : <input type="text" name="username"/> </label></div>
     <div><label> Password: <input type="password" name="password"/> </label></div>
     <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
-    <div><input class="btn btn-success" type="submit" value="Sign In"/></div>
+    <div><input type="submit" value="Зарегистрироваться"/></div>
 </form>
 </body>
 </html>
