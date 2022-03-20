@@ -9,6 +9,7 @@ import java.util.Map;
 public class LectureController {
     @GetMapping("/")
     public String greeting(Map<String, Object> model) {
+        model.put("username", "пользователь");
         return "greeting";
     }
 }
