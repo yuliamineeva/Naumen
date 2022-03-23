@@ -1,4 +1,8 @@
 package ru.naumen.javakids.model;
 
-public class Lecture {
+public interface Lecture {
+    int getId();
+    String getTopic();
+    String getContent();
+    Status getStatus();
 }
