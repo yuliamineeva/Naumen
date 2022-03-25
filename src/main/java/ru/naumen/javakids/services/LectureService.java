@@ -8,7 +8,7 @@ public interface LectureService {
 
     List<Lecture> getLectures();
 
-    Lecture getLectureById(int id);
+    Lecture getLectureById(Long id);
 
     void saveLecture(String topic, String content);
 

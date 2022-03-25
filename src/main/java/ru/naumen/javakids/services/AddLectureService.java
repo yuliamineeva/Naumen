@@ -1,41 +1,40 @@
 package ru.naumen.javakids.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.naumen.javakids.model.AddLecture;
 import ru.naumen.javakids.model.Lecture;
-import ru.naumen.javakids.model.lectures.Lecture1;
-import ru.naumen.javakids.model.lectures.Lecture2;
-import ru.naumen.javakids.model.lectures.Lecture3;
+import ru.naumen.javakids.repository.LectureRepo;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
-public class AddLectureService implements LectureService{
+public class AddLectureService implements LectureService {
 
+    private LectureRepo lectureRepo;
     private List<Lecture> lectures;
 
-    public AddLectureService() {
-        lectures = new ArrayList<>();
-        lectures.add(new Lecture1());
-        lectures.add(new Lecture2());
-        lectures.add(new Lecture3());
+    @Autowired
+    public AddLectureService(LectureRepo lectureRepo) {
+        this.lectureRepo = lectureRepo;
     }
 
     @Override
     public List<Lecture> getLectures() {
-        return lectures;
+        List<Lecture> result = new ArrayList<>();
+        lectureRepo.findAll().forEach(result::add);
+        return result;
     }
 
     @Override
-    public Lecture getLectureById(int id) {
-        List<Lecture> found =
-                lectures.stream().filter(lecture -> lecture.getId() == id).collect(Collectors.toList());
-        return found.size() == 0 ? null : found.stream().findFirst().get();
+    public Lecture getLectureById(Long id) {
+        return  lectureRepo.findById(id).get();
     }
 
     @Override
     public void saveLecture(String topic, String content) {
-
+        AddLecture lecture = new AddLecture(topic, content);
+        lectureRepo.save(lecture);
     }
 }

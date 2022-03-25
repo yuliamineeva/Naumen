@@ -1,13 +1,23 @@
 package ru.naumen.javakids.model;
 
-public class AbstractLecture implements Lecture {
-    protected int id;
+import javax.persistence.*;
+import java.io.Serializable;
+
+@MappedSuperclass
+public class AbstractLecture implements Lecture, Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    protected Long id;
     protected String topic;
     protected String content;
+
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
     Status status;
 
     @Override
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
