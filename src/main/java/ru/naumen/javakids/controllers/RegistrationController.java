@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import ru.naumen.javakids.domain.Role;
-import ru.naumen.javakids.domain.User;
+import ru.naumen.javakids.model.Role;
+import ru.naumen.javakids.model.User;
 import ru.naumen.javakids.repository.UserRepo;
 
 import java.util.HashSet;

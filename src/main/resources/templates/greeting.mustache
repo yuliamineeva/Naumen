@@ -5,25 +5,24 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-    <title>Привет, пользователь!</title>
+    <title>Javakids</title>
 </head>
 <body>
-<div>Здравствуй, {{username}}!</div>
+
+<form action="/logout" method="post">
+    <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+    <input class="button" type="submit" value="Выйти"/>
+</form>
 
 <div class="list-group list-group-flush">
     <p class=".text-info list-group-item">
-         Это наша первая страничка.<br>
-    </p>
-
-    <p class=".text-info list-group-item">
-        Поздравьте нас :)<br>
-    </p>
-
-    <p class=".text-danger list-group-item">
-        Ну что, начинаем!.<br>
+        Пользователь: {{username}}<br>
     </p>
 </div>
+<div>
+    <h3>Сайт для изучения Java</h3>
+</div>
 
-<a href="/main">Главная страница</a>
+<a href="/lectures">Список лекций</a>
 </body>
 </html>

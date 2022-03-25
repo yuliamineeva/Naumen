@@ -42,4 +42,5 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userService)
                 .passwordEncoder(NoOpPasswordEncoder.getInstance());
     }
+
 }

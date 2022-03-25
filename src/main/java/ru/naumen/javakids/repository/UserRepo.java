@@ -1,7 +1,7 @@
 package ru.naumen.javakids.repository;
 
 import org.springframework.data.repository.CrudRepository;
-import ru.naumen.javakids.domain.User;
+import ru.naumen.javakids.model.User;
 
 /**
  * @author avzhukov

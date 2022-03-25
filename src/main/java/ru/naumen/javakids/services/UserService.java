@@ -5,7 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ru.naumen.javakids.domain.User;
+import ru.naumen.javakids.model.User;
 import ru.naumen.javakids.repository.UserRepo;
 
 /**

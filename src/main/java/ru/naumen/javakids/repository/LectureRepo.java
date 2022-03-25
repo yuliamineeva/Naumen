@@ -1,4 +1,7 @@
 package ru.naumen.javakids.repository;
 
-public class LectureRepo {
+import org.springframework.data.repository.CrudRepository;
+import ru.naumen.javakids.model.AddLecture;
+
+public interface LectureRepo extends CrudRepository<AddLecture, Long> {
 }
