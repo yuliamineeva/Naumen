@@ -20,7 +20,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/")
+/*    @GetMapping("/")
     public String greeting(Principal principal, Map<String, Object> model) {
         User userActive = (User) userService.loadUserByUsername(principal.getName());
         if (userActive == null) {
@@ -29,6 +29,6 @@ public class UserController {
             model.put("username", userActive.getUsername());
         }
         return "greeting";
-    }
+    }*/
 
 }
