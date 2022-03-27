@@ -23,7 +23,7 @@ public class RegistrationController {
 
     @GetMapping("/registration")
     public String registration() {
-        return "registration";
+        return "/user/registration";
     }
 
     @PostMapping("/registration")
@@ -32,7 +32,7 @@ public class RegistrationController {
 
         if (userFromDb != null) {
             model.put("message", "Пользователь уже существует!");
-            return "registration";
+            return "/user/registration";
         }
 
         Set<Role> roles = new HashSet<>();
@@ -42,6 +42,6 @@ public class RegistrationController {
         user.setRoles(roles);
         userRepo.save(user);
 
-        return "redirect:/login";
+        return "redirect:/user/login";
     }
 }
