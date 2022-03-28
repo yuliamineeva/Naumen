@@ -32,7 +32,7 @@ public class RegistrationController {
 
         if (userFromDb != null) {
             model.put("message", "Пользователь уже существует!");
-            return "/user/registration";
+            return "/registration";
         }
 
         Set<Role> roles = new HashSet<>();
@@ -42,6 +42,6 @@ public class RegistrationController {
         user.setRoles(roles);
         userRepo.save(user);
 
-        return "redirect:/user/login";
+        return "redirect:/login";
     }
 }
