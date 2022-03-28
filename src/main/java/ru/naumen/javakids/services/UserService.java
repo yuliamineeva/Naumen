@@ -25,4 +25,12 @@ public class UserService implements UserDetailsService {
         }
         return user;
     }
+
+    public User loadUserById(Integer id) {
+        User user = userRepo.findById(id);
+        if (user == null){
+            throw new UsernameNotFoundException("User not found");
+        }
+        return user;
+    }
 }

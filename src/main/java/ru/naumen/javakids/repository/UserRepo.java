@@ -9,4 +9,5 @@ import ru.naumen.javakids.model.User;
  */
 public interface UserRepo extends CrudRepository<User, Long> {
     User findByUsername(String username);
+    User findById(Integer id);
 }

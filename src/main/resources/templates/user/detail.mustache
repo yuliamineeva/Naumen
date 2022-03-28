@@ -1,0 +1,17 @@
+{{> /layout/header}}
+
+<div class="container mt-3">
+
+    <div class="mb-3 mt-3">
+        {{user.username}}
+    </div>
+    <div class="mb-3">
+        {{user.password}}
+    </div>
+   <div class="mb-3">
+        {{user.email}}
+    </div>
+    <a href="/s/user/updateForm" class="btn btn-secondary">Обновить</a>
+</div>
+
+{{> /layout/footer}}

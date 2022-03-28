@@ -5,10 +5,11 @@
         {{message}}
     {{/message}}
     <form action="/registration" method="post">
-        <div><label> User Name : <input type="text" name="username"/> </label></div>
-        <div><label> Password: <input type="password" name="password"/> </label></div>
+        <div class="mb-3 mt-3"><label> Имя пользователя: <input type="text" class="form-control" name="username"/> </label></div>
+        <div class="mb-3"><label> Пароль: <input type="password" class="form-control" name="password"/> </label></div>
+        <div class="mb-3"><label> Email : <input type="text" class="form-control" name="email"/> </label></div>
         <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
-        <div><input type="submit" value="Зарегистрироваться"/></div>
+        <div><input type="submit" class="btn btn-dark" value="Зарегистрироваться"/></div>
     </form>
 </div>
 
