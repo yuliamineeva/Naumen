@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import ru.naumen.javakids.model.User;
 import ru.naumen.javakids.repository.UserRepo;
 
+import java.util.Optional;
+
 /**
  * @author avzhukov
  * @since 17.03.2022
@@ -20,17 +22,19 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepo.findByUsername(username);
+
         if (user == null){
             throw new UsernameNotFoundException("User not found");
         }
         return user;
     }
 
-    public User loadUserById(Integer id) {
-        User user = userRepo.findById(id);
-        if (user == null){
+    public User loadUserById(Long id) {
+        Optional<User> userOp = userRepo.findById(id);
+
+        if (userOp.isEmpty()) {
             throw new UsernameNotFoundException("User not found");
         }
-        return user;
+        return userOp.get();
     }
 }
