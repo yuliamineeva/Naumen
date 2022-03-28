@@ -1,5 +1,15 @@
 {{> /layout/header}}
 
+<form action="/logout" method="post">
+    <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+    <input class="button" type="submit" value="Выйти"/>
+</form>
+<div class="list-group list-group-flush">
+    <p class=".text-info list-group-item">
+        Пользователь: {{username}}<br>
+    </p>
+</div>
+<a href="/lectures">Список лекций</a>
 <div class="mt-4 p-5 bg-secondary text-white rounded">
     <h1>JavaKids - обучение детей программированию на JAVA</h1>
     <p>Мы рады видеть Вас на нашей платформе для обучения</p>

@@ -19,7 +19,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/login")
+    @GetMapping("/")
     public String login(Principal principal, Map<String, Object> model) {
         User userActive = (User) userService.loadUserByUsername(principal.getName());
         if (userActive == null) {
@@ -27,6 +27,6 @@ public class UserController {
         } else {
             model.put("username", userActive.getUsername());
         }
-        return "/user/login";
+        return "index";
     }
 }
