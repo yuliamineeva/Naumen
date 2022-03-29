@@ -36,7 +36,7 @@ public class LectureController {
         model.addAttribute("lectures", lectures);
 
         User userActive = (User) userService.loadUserByUsername(principal.getName());
-        model.addAttribute("principal", userActive);
+        model.addAttribute("user", userActive);
         return "lectures";
     }
 

@@ -26,8 +26,7 @@ public class UserController {
         if (userActive == null) {
             model.put("username", "имя пользователя");
         } else {
-            model.put("username", userActive.getUsername());
-            model.put("principal", userActive);
+            model.put("user", userActive);
         }
         return "index";
     }
@@ -39,23 +38,22 @@ public class UserController {
             return "/error/page";
         } else {
             model.addAttribute("user", user);
-            model.addAttribute("principal", user);
             return "/user/detail";
         }
     }
 
-    @PostMapping("/update")
-    public String updateUser(@RequestBody User user, Model model) {
-        model.addAttribute("user", user);
-
+    @GetMapping("/update")
+    public String updateUser(Principal principal, Model model) {
+        User userActive = (User) userService.loadUserByUsername(principal.getName());
+        model.addAttribute("user", userActive);
         return "user/update";
     }
 
-    @PutMapping("/user/{id}")
+    @PatchMapping("/user/{id}")
     public String update(@PathVariable Long id, @RequestBody User user, Model model) {
         User userEntity = userService.updateUser(id, user);
 
-        model.addAttribute("principal", userEntity);
+        model.addAttribute("user", userEntity);
 
         return "/user/"+id;
     }
