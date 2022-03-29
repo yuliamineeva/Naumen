@@ -1,6 +1,7 @@
 package ru.naumen.javakids.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -42,8 +43,8 @@ public class UserController {
         }
     }
 
-    @GetMapping("/update")
-    public String updateUser(Principal principal, Model model) {
+    @GetMapping("/user/update")
+    public String update(Principal principal, Model model) {
         User userActive = (User) userService.loadUserByUsername(principal.getName());
         model.addAttribute("user", userActive);
         return "user/update";
@@ -56,5 +57,11 @@ public class UserController {
         model.addAttribute("user", userEntity);
 
         return "/user/"+id;
+    }
+
+    @GetMapping("/logout")
+    public String logout() {
+        SecurityContextHolder.clearContext();
+        return "redirect:/login";
     }
 }
