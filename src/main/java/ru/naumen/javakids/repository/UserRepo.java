@@ -3,6 +3,8 @@ package ru.naumen.javakids.repository;
 import org.springframework.data.repository.CrudRepository;
 import ru.naumen.javakids.model.User;
 
+import java.util.Optional;
+
 /**
  * @author avzhukov
  * @since 17.03.2022

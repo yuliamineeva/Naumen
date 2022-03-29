@@ -1,0 +1,19 @@
+{{> /layout/header}}
+
+<div class="container mt-3">
+    <form action="/user/{{user.id}}" method="patch">
+        <input type="hidden" id="id" value="{{user.id}}">
+        <div class="mb-3 mt-3">
+            <input type="text" class="form-control" value="{{user.username}}" id="username" readonly>
+        </div>
+        <div class="mb-3">
+            <input type="password" class="form-control" value="{{user.password}}" id="password" required>
+        </div>
+        <div class="mb-3">
+            <input type="email" class="form-control" value="{{user.email}}" id="email" required>
+        </div>
+        <div><input type="submit" class="btn btn-secondary" value="Обновить"/></div>
+    </form>
+</div>
+
+{{> /layout/footer}}

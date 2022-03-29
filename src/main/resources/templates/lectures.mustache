@@ -1,42 +1,22 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-    <title>Все лекции</title>
-    <style>
-        table {
-            border-collapse: collapse;
-        }
+{{> /layout/header}}
 
-        table, td, th {
-            border: 1px solid #999;
-            padding: 5px;
-        }
-    </style>
-</head>
-<body>
-
-<h3>Список лекций</h3>
-<table>
-    <tr>
-        <th>Id</th>
-        <th>Topic</th>
-        <th>Status</th>
-    </tr>
-
-    {{#lectures}}
+<div class="container mt-3">
+    <table>
         <tr>
-            <td>{{id}}</td>
-            <td>{{topic}}</td>
-            <td>{{status}}</td>
+            <th>Id</th>
+            <th>Topic</th>
+            <th>Status</th>
         </tr>
-    {{/lectures}}
 
-</table>
+        {{#lectures}}
+            <tr>
+                <td>{{id}}</td>
+                <td>{{topic}}</td>
+                <td>{{status}}</td>
+            </tr>
+        {{/lectures}}
 
-<a href="/">Главная страница</a>
-</body>
-</html>
+    </table>
+</div>
+
+{{> /layout/footer}}
