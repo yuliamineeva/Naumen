@@ -22,8 +22,8 @@ public class RegistrationController {
     private UserRepo userRepo;
 
     @GetMapping("/registration")
-    public String registration() {
-        return "registration";
+    public String registrationUser() {
+        return "/user/registration";
     }
 
     @PostMapping("/registration")
@@ -32,7 +32,7 @@ public class RegistrationController {
 
         if (userFromDb != null) {
             model.put("message", "Пользователь уже существует!");
-            return "registration";
+            return "/user/registration";
         }
 
         Set<Role> roles = new HashSet<>();

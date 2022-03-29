@@ -5,8 +5,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.naumen.javakids.model.User;
 import ru.naumen.javakids.repository.UserRepo;
+
+import java.util.Optional;
 
 /**
  * @author avzhukov
@@ -14,15 +17,41 @@ import ru.naumen.javakids.repository.UserRepo;
  */
 @Service
 public class UserService implements UserDetailsService {
+
     @Autowired
     private UserRepo userRepo;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepo.findByUsername(username);
+
         if (user == null){
             throw new UsernameNotFoundException("User not found");
         }
         return user;
+    }
+
+    public User loadUserById(Long id) {
+        Optional<User> userOp = userRepo.findById(id);
+
+        if (userOp.isEmpty()) {
+            throw new UsernameNotFoundException("User not found");
+        }
+        return userOp.get();
+    }
+
+    @Transactional
+    public User updateUser(Long id, User user) {
+        Optional<User> userOp = userRepo.findById(id);
+
+        if (userOp.isPresent()) {
+            User userEntity = userOp.get();
+            userEntity.setPassword(user.getPassword());
+            userEntity.setEmail(user.getEmail());
+
+            return userEntity;
+        }
+
+        return null;
     }
 }
