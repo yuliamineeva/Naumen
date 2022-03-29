@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.naumen.javakids.model.User;
 import ru.naumen.javakids.repository.UserRepo;
 
@@ -16,6 +17,7 @@ import java.util.Optional;
  */
 @Service
 public class UserService implements UserDetailsService {
+
     @Autowired
     private UserRepo userRepo;
 
@@ -36,5 +38,20 @@ public class UserService implements UserDetailsService {
             throw new UsernameNotFoundException("User not found");
         }
         return userOp.get();
+    }
+
+    @Transactional
+    public User updateUser(Long id, User user) {
+        Optional<User> userOp = userRepo.findById(id);
+
+        if (userOp.isPresent()) {
+            User userEntity = userOp.get();
+            userEntity.setPassword(user.getPassword());
+            userEntity.setEmail(user.getEmail());
+
+            return userEntity;
+        }
+
+        return null;
     }
 }

@@ -3,8 +3,7 @@ package ru.naumen.javakids.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 import ru.naumen.javakids.model.User;
 import ru.naumen.javakids.services.UserService;
 
@@ -33,14 +32,31 @@ public class UserController {
         return "index";
     }
 
-    @GetMapping("/s/user/{id}")
-    public String getDetail(@PathVariable Long id, Model model) {
+    @GetMapping("/user/{id}")
+    public String getUserDetail(@PathVariable Long id, Model model) {
         User user = userService.loadUserById(id);
         if (user == null) {
             return "/error/page";
         } else {
             model.addAttribute("user", user);
+            model.addAttribute("principal", user);
             return "/user/detail";
         }
+    }
+
+    @PostMapping("/update")
+    public String updateUser(@RequestBody User user, Model model) {
+        model.addAttribute("user", user);
+
+        return "user/update";
+    }
+
+    @PutMapping("/user/{id}")
+    public String update(@PathVariable Long id, @RequestBody User user, Model model) {
+        User userEntity = userService.updateUser(id, user);
+
+        model.addAttribute("principal", userEntity);
+
+        return "/user/"+id;
     }
 }
