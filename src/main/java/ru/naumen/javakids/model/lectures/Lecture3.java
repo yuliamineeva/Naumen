@@ -8,6 +8,6 @@ public class Lecture3 extends AbstractLecture {
         id = 3L;
         topic = "Объявление переменных";
         content = "Содержимое лекции 3";
-        Status status = Status.NOT_STARTED;
+        status = Status.NOT_STARTED;
     }
 }

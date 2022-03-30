@@ -5,4 +5,5 @@ public interface Lecture {
     String getTopic();
     String getContent();
     Status getStatus();
+    void setStatus(Status status);
 }

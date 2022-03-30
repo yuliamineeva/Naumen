@@ -13,6 +13,6 @@ public class AddLecture extends AbstractLecture {
     public AddLecture(String topic, String content) {
         this.topic = topic;
         this.content = content;
-        this.getStatus();
+        this.setStatus(Status.NOT_STARTED);
     }
 }
