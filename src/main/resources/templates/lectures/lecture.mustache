@@ -1,11 +1,16 @@
 {{> /layout/header}}
 
+<div class="container mt-3">
+<form action="/lecture/{{lecture.id}}" method="post">
+    <input type="hidden" name="_method" value="put" />
+    <input type="hidden" id="lectureId" value="{{lecture.id}}">
+</form>
 {{#lecture}}
 <h3>Лекция {{id}}. {{topic}}</h3>
   {{content}} <br>
 Статус лекции:  {{status}}<br>
  {{/lecture}}
 
-<a href="/">Главная страница</a>
-
+<a href="/mylectures">Все лекции</a>
+</div>
 {{> /layout/footer}}

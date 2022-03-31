@@ -1,0 +1,33 @@
+{{> /layout/header}}
+
+<style>
+    table {
+        border-collapse: collapse;
+    }
+
+    table, td, th {
+        border: 1px solid #999;
+        padding: 5px;
+    }
+</style>
+
+<div class="container mt-3">
+    <table>
+        <tr>
+            <th>Id</th>
+            <th>Имя пользователя</th>
+            <th>email</th>
+        </tr>
+
+        {{#users}}
+            <tr>
+                <td>{{id}}</td>
+                <td>{{username}}</td>
+                <td>{{email}}</td>
+            </tr>
+        {{/users}}
+
+    </table>
+</div>
+
+{{> /layout/footer}}

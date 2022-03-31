@@ -5,10 +5,12 @@ import org.springframework.stereotype.Service;
 import ru.naumen.javakids.model.AddLecture;
 import ru.naumen.javakids.model.Lecture;
 import ru.naumen.javakids.model.Status;
+import ru.naumen.javakids.model.User;
 import ru.naumen.javakids.repository.LectureRepo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AddLectureService implements LectureService {

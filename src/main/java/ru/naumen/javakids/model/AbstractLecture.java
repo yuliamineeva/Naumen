@@ -40,4 +40,14 @@ public class AbstractLecture implements Lecture, Serializable {
     public void setStatus(Status status) {
         this.status = status;
     }
+
+    @Override
+    public void setTopic(String topic) {
+        this.topic = topic;
+    }
+
+    @Override
+    public void setContent(String content) {
+        this.content = content;
+    }
 }

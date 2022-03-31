@@ -1,0 +1,20 @@
+{{> /layout/header}}
+
+<div class="container mt-3">
+    <table>
+        <tr>
+            <th>Id</th>
+            <th>Topic</th>
+        </tr>
+
+        {{#lectures}}
+            <tr>
+                <td>{{id}}</td>
+                <td><a href="/lecture/{{id}}"> {{topic}} </a></td>
+            </tr>
+        {{/lectures}}
+
+    </table>
+</div>
+
+{{> /layout/footer}}
