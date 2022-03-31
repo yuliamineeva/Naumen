@@ -1,0 +1,22 @@
+{{> /layout/header}}
+
+<div class="container mt-3">
+
+    <div class="container mt-3">
+        <input type="hidden" id="id" value="{{lecture.id}}">
+        <div class="mb-3">
+            Статус лекции: {{lecture.status}}
+        </div>
+        <div class="mb-3 mt-3">
+            <h1>{{lecture.topic}}</h1>
+        </div>
+        <hr />
+        <div class="mb-3">
+            {{{lecture.content}}}
+        </div>
+    </div>
+
+<a href="/myLectures">Все лекции</a>
+</div>
+
+{{> /layout/footer}}

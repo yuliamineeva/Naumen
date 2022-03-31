@@ -32,10 +32,10 @@ public class LectureController {
 
         User userActive = (User) userService.loadUserByUsername(principal.getName());
         model.addAttribute("user", userActive);
-        return "/lectures/lecturesList";
+        return "/lectures/list";
     }
 
-    @GetMapping("/mylectures")
+    @GetMapping("/myLectures")
     public String getMyLectures(Principal principal, Model model) {
         List<Lecture> lectures = lectureService.getLectures();
         model.addAttribute("lectures", lectures);
@@ -50,13 +50,13 @@ public class LectureController {
         Optional<Lecture> lectureOp = lectureService.getLectureById(lectureId);
         if (lectureOp.isPresent()){
             Lecture lecture = lectureOp.get();
-            lecture.setStatus(Status.IN_PROCESS);
+          //  lecture.setStatus(Status.IN_PROCESS);
             model.addAttribute("lecture", lecture);
         }
 
         User userActive = (User) userService.loadUserByUsername(principal.getName());
         model.addAttribute("user", userActive);
-        return "lectures/lecture";
+        return "lectures/detail";
     }
 
 /*    @PutMapping("/lecture/{id}")
@@ -81,10 +81,10 @@ public class LectureController {
     }*/
 
     @GetMapping("/createLecture")
-    public String addLecture(Principal principal, Model model) {
+    public String createLecture(Principal principal, Model model) {
         User userActive = (User) userService.loadUserByUsername(principal.getName());
         model.addAttribute("user", userActive);
-        return "/lectures/addLecture";
+        return "/lectures/add";
     }
 
     @PostMapping("/createLecture")
