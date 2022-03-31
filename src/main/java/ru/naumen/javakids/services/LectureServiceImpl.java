@@ -55,7 +55,7 @@ public class LectureServiceImpl implements LectureService {
     @Override
     public void updateStatusLecture(Long id, Status status) {
         Optional<Lecture> lectureOp = lectureRepo.findById(id);
-        
+
         if (lectureOp.isPresent()) {
             Lecture updLecture = lectureOp.get();
             updLecture.setStatus(status);
