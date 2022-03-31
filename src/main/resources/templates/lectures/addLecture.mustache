@@ -1,0 +1,21 @@
+{{> /layout/header}}
+
+<div class="container mt-3">
+    <form action="/createLecture" method="post">
+        <div class="mb-3 mt-3">
+            <input type="text" class="form-control" placeholder="Тема лекции" name="topic">
+        </div>
+        <div class="mb-3">
+            <textarea name="content" rows="10" class="form-control" id="summernote"></textarea>
+        </div>
+        <button type="submit" class="btn btn-secondary">Добавить</button>
+    </form>
+</div>
+
+<script>
+    $('#summernote').summernote({
+        height: 300
+    });
+</script>
+
+{{> /layout/footer}}

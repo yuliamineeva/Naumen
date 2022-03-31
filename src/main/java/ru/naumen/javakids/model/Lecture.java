@@ -1,11 +1,18 @@
 package ru.naumen.javakids.model;
 
-public interface Lecture {
-    Long getId();
-    String getTopic();
-    String getContent();
-    Status getStatus();
-    void setTopic(String topic);
-    void setContent(String content);
-    void setStatus(Status status);
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "lectures")
+public class Lecture extends AbstractLecture {
+
+    public Lecture() {
+    }
+
+    public Lecture(String topic, String content) {
+        this.topic = topic;
+        this.content = content;
+        this.setStatus(Status.NOT_STARTED);
+    }
 }
