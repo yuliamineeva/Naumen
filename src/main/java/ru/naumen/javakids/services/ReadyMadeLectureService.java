@@ -2,6 +2,7 @@ package ru.naumen.javakids.services;
 
 import org.springframework.stereotype.Service;
 import ru.naumen.javakids.model.Lecture;
+import ru.naumen.javakids.model.Status;
 import ru.naumen.javakids.model.lectures.Lecture1;
 import ru.naumen.javakids.model.lectures.Lecture2;
 import ru.naumen.javakids.model.lectures.Lecture3;
@@ -35,6 +36,11 @@ public class ReadyMadeLectureService implements LectureService{
 
     @Override
     public void saveLecture(String topic, String content) {
+
+    }
+
+    @Override
+    public void updateStatusLecture(Long id, Status status) {
 
     }
 }

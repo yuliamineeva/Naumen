@@ -4,10 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.naumen.javakids.model.AddLecture;
 import ru.naumen.javakids.model.Lecture;
+import ru.naumen.javakids.model.Status;
+import ru.naumen.javakids.model.User;
 import ru.naumen.javakids.repository.LectureRepo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AddLectureService implements LectureService {
@@ -36,5 +39,12 @@ public class AddLectureService implements LectureService {
     public void saveLecture(String topic, String content) {
         AddLecture lecture = new AddLecture(topic, content);
         lectureRepo.save(lecture);
+    }
+
+    @Override
+    public void updateStatusLecture(Long id, Status status) {
+        AddLecture updLecture = lectureRepo.findById(id).get();
+        updLecture.setStatus(status);
+        lectureRepo.save(updLecture);
     }
 }

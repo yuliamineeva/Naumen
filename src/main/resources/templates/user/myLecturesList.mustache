@@ -1,6 +1,7 @@
 {{> /layout/header}}
 
 <div class="container mt-3">
+    <h3>Мои лекции:</h3>
     <table>
         <tr>
             <th>Id</th>
@@ -11,7 +12,7 @@
         {{#lectures}}
             <tr>
                 <td>{{id}}</td>
-                <td>{{topic}}</td>
+                <td><a href="/lecture/{{id}}"> {{topic}} </a></td>
                 <td>{{status}}</td>
             </tr>
         {{/lectures}}

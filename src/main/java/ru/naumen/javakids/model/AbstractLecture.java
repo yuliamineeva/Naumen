@@ -14,7 +14,7 @@ public class AbstractLecture implements Lecture, Serializable {
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    Status status;
+    protected Status status;
 
     @Override
     public Long getId() {
@@ -33,6 +33,21 @@ public class AbstractLecture implements Lecture, Serializable {
 
     @Override
     public Status getStatus() {
-        return Status.NOT_STARTED;
+        return status;
+    }
+
+    @Override
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    @Override
+    public void setTopic(String topic) {
+        this.topic = topic;
+    }
+
+    @Override
+    public void setContent(String content) {
+        this.content = content;
     }
 }
