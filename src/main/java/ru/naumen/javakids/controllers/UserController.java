@@ -5,11 +5,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.naumen.javakids.model.Lecture;
 import ru.naumen.javakids.model.User;
 import ru.naumen.javakids.services.UserService;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 public class UserController {
@@ -63,5 +66,14 @@ public class UserController {
     public String logout() {
         SecurityContextHolder.clearContext();
         return "redirect:/login";
+    }
+
+    @GetMapping("/allusers")
+    public String getUsersList(Principal principal, Model model){
+        List<User> users = userService.getUsersList();
+        model.addAttribute("users", users);
+        User userActive = (User) userService.loadUserByUsername(principal.getName());
+        model.addAttribute("user", userActive);
+        return "usersList";
     }
 }

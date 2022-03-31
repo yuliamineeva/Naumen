@@ -6,9 +6,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.naumen.javakids.model.Lecture;
 import ru.naumen.javakids.model.User;
 import ru.naumen.javakids.repository.UserRepo;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -53,5 +56,11 @@ public class UserService implements UserDetailsService {
         }
 
         return null;
+    }
+
+    public List<User> getUsersList() {
+        List<User> result = new ArrayList<>();
+        userRepo.findAll().forEach(result::add);
+        return result;
     }
 }
