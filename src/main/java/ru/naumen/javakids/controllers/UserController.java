@@ -35,6 +35,22 @@ public class UserController {
         return "index";
     }
 
+    @GetMapping("/user/update")
+    public String updateUser(Principal principal, Model model) {
+        User userActive = (User) userService.loadUserByUsername(principal.getName());
+        model.addAttribute("user", userActive);
+        return "user/update";
+    }
+
+    @PostMapping("/user/{id}")
+    public String updateUser(@PathVariable Long id, User user, Model model) {
+        User userEntity = userService.updateUser(id, user);
+
+        model.addAttribute("user", userEntity);
+
+        return "redirect:/user/"+id;
+    }
+
     @GetMapping("/user/{id}")
     public String getUserDetail(@PathVariable Long id, Model model) {
         User user = userService.loadUserById(id);
@@ -44,22 +60,6 @@ public class UserController {
             model.addAttribute("user", user);
             return "/user/detail";
         }
-    }
-
-    @GetMapping("/user/update")
-    public String update(Principal principal, Model model) {
-        User userActive = (User) userService.loadUserByUsername(principal.getName());
-        model.addAttribute("user", userActive);
-        return "user/update";
-    }
-
-    @PostMapping("/user/{id}")
-    public String update(@PathVariable Long id, User user, Model model) {
-        User userEntity = userService.updateUser(id, user);
-
-        model.addAttribute("user", userEntity);
-
-        return "/user/"+id;
     }
 
     @GetMapping("/logout")
