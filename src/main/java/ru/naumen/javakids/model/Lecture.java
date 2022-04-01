@@ -12,9 +12,9 @@ public class Lecture {
     private String topic;
     private String content;
 
-/*    @Column(name = "status")
+    @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    private Status status;*/
+    private Status status;
 
     public Lecture() {
     }
@@ -37,13 +37,13 @@ public class Lecture {
         return content;
     }
 
-/*    public Status getStatus() {
+    public Status getStatus() {
         return status;
     }
 
     public void setStatus(Status status) {
         this.status = status;
-    }*/
+    }
 
     public void setTopic(String topic) {
         this.topic = topic;

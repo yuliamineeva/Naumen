@@ -2,6 +2,7 @@ package ru.naumen.javakids.configurations;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -24,7 +25,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
-                .antMatchers("/login","/registration").permitAll()
+                .antMatchers(HttpMethod.GET,"/login","/registration").permitAll()
+                .antMatchers(HttpMethod.POST, "/lecture/create","/user/*").permitAll()
                 .anyRequest().authenticated()
             .and()
                 .formLogin()
@@ -34,7 +36,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .rememberMe()
             .and()
                 .logout()
-                .permitAll();
+                .permitAll()
+            .and().
+                csrf().disable();
     }
 
     @Override

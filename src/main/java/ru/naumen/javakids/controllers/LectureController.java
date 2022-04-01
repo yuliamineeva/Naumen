@@ -3,11 +3,14 @@ package ru.naumen.javakids.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import ru.naumen.javakids.model.Lecture;
 import ru.naumen.javakids.model.Status;
 import ru.naumen.javakids.model.User;
-import ru.naumen.javakids.services.*;
+import ru.naumen.javakids.services.LectureService;
+import ru.naumen.javakids.services.UserService;
 
 import java.security.Principal;
 import java.util.List;
@@ -32,17 +35,17 @@ public class LectureController {
 
         User userActive = (User) userService.loadUserByUsername(principal.getName());
         model.addAttribute("user", userActive);
-        return "/lectures/list";
+        return "/lecture/list";
     }
 
-    @GetMapping("/myLectures")
+    @GetMapping("/user/lectures")
     public String getMyLectures(Principal principal, Model model) {
         List<Lecture> lectures = lectureService.getLectures();
         model.addAttribute("lectures", lectures);
 
         User userActive = (User) userService.loadUserByUsername(principal.getName());
         model.addAttribute("user", userActive);
-        return "user/myLecturesList";
+        return "user/lectures";
     }
 
     @GetMapping(value = "/lecture/{id}")
@@ -50,46 +53,26 @@ public class LectureController {
         Optional<Lecture> lectureOp = lectureService.getLectureById(lectureId);
         if (lectureOp.isPresent()){
             Lecture lecture = lectureOp.get();
-          //  lecture.setStatus(Status.IN_PROCESS);
+            lecture.setStatus(Status.IN_PROCESS);
             model.addAttribute("lecture", lecture);
         }
 
         User userActive = (User) userService.loadUserByUsername(principal.getName());
         model.addAttribute("user", userActive);
-        return "lectures/detail";
+        return "lecture/detail";
     }
 
-/*    @PutMapping("/lecture/{id}")
-    public String updateStatusLecture(@PathVariable("id") Long lectureId, @RequestBody Lecture lecture,
-                                      Model model) {
-        lecture.setStatus(Status.IN_PROCESS);
-        lectureService.stream()
-                .filter(lectureService -> lectureService instanceof LectureServiceImpl)
-                .findFirst()
-                .get().updateStatusLecture(lectureId, Status.IN_PROCESS);
-        model.addAttribute("lecture", lecture);
-        return "lecture/" + lectureId;
-    }*/
-
-/*    @GetMapping("/createLecturesAndView/{topic}")
-    public String createLecturesAndView(@PathVariable String topic) {
-        lectureServices.stream()
-                .filter(lectureService -> lectureService instanceof AddLectureService)
-                .findFirst()
-                .get().saveLecture(topic, topic);
-        return "redirect:/lectures";
-    }*/
-
-    @GetMapping("/createLecture")
+    @GetMapping("/lecture/create")
     public String createLecture(Principal principal, Model model) {
         User userActive = (User) userService.loadUserByUsername(principal.getName());
         model.addAttribute("user", userActive);
-        return "/lectures/add";
+        return "/lecture/add";
     }
 
-    @PostMapping("/createLecture")
-    public String createLecture(@RequestBody Lecture lecture) {
+    @PostMapping("/lecture/create")
+    public String createLecture(Lecture lecture, Model model) {
         lectureService.saveLecture(lecture);
+        model.addAttribute("lecture", lecture);
         return "redirect:/lectures";
     }
 }

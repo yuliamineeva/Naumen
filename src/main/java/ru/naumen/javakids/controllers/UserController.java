@@ -4,15 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import ru.naumen.javakids.model.Lecture;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import ru.naumen.javakids.model.User;
 import ru.naumen.javakids.services.UserService;
 
 import java.security.Principal;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Controller
 public class UserController {
@@ -53,8 +53,8 @@ public class UserController {
         return "user/update";
     }
 
-    @PatchMapping("/user/{id}")
-    public String update(@PathVariable Long id, @RequestBody User user, Model model) {
+    @PostMapping("/user/{id}")
+    public String update(@PathVariable Long id, User user, Model model) {
         User userEntity = userService.updateUser(id, user);
 
         model.addAttribute("user", userEntity);
@@ -68,12 +68,12 @@ public class UserController {
         return "redirect:/login";
     }
 
-    @GetMapping("/allusers")
+    @GetMapping("/users")
     public String getUsersList(Principal principal, Model model){
         List<User> users = userService.getUsersList();
         model.addAttribute("users", users);
         User userActive = (User) userService.loadUserByUsername(principal.getName());
         model.addAttribute("user", userActive);
-        return "usersList";
+        return "/user/list";
     }
 }
