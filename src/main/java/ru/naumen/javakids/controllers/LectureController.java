@@ -23,8 +23,8 @@ public class LectureController {
     private final UserService userService;
 
     @Autowired
-    public LectureController(LectureService lectureServices, UserService userService) {
-        this.lectureService = lectureServices;
+    public LectureController(LectureService lectureService, UserService userService) {
+        this.lectureService = lectureService;
         this.userService = userService;
     }
 
@@ -71,6 +71,7 @@ public class LectureController {
 
     @PostMapping("/lecture/create")
     public String createLecture(Lecture lecture, Model model) {
+        lecture.setStatus(Status.NOT_STARTED);
         lectureService.saveLecture(lecture);
         model.addAttribute("lecture", lecture);
         return "redirect:/lectures";

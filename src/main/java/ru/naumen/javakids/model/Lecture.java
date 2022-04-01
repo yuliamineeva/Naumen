@@ -1,5 +1,7 @@
 package ru.naumen.javakids.model;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 
 @Entity
@@ -10,6 +12,9 @@ public class Lecture {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String topic;
+
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
     private String content;
 
     @Column(name = "status")
@@ -22,7 +27,7 @@ public class Lecture {
     public Lecture(String topic, String content) {
         this.topic = topic;
         this.content = content;
-      //  this.setStatus(Status.NOT_STARTED);
+        this.status = Status.NOT_STARTED;
     }
 
     public Long getId() {
