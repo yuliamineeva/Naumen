@@ -4,14 +4,15 @@ import ru.naumen.javakids.model.Lecture;
 import ru.naumen.javakids.model.Status;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface LectureService {
 
     List<Lecture> getLectures();
 
-    Lecture getLectureById(Long id);
+    Optional<Lecture> getLectureById(Long id);
 
-    void saveLecture(String topic, String content);
-
+    void saveLecture(Lecture lecture);
+    void updateLecture(Lecture lecture, Long id);
     void updateStatusLecture(Long id, Status status);
 }
