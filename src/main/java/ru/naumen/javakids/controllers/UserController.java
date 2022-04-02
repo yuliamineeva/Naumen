@@ -30,8 +30,8 @@ public class UserController {
         if (userActive == null) {
             model.addAttribute("username", "имя пользователя");
         } else {
-            model.addAttribute("user", userActive);
-            model.addAttribute("principal", userActive);
+            model.put("user", userActive);
+            model.put("principal", userActive);
         }
         return "index";
     }
@@ -39,9 +39,7 @@ public class UserController {
     @GetMapping("/user/update")
     public String updateUser(Principal principal, Model model) {
         User userActive = (User) userService.loadUserByUsername(principal.getName());
-        model.addAttribute("user", userActive);
         model.addAttribute("principal", userActive);
-
         return "user/update";
     }
 
@@ -60,7 +58,6 @@ public class UserController {
         if (user == null) {
             return "/error/page";
         } else {
-            model.addAttribute("user", user);
             model.addAttribute("principal", user);
             return "/user/detail";
         }
