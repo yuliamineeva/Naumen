@@ -25,12 +25,13 @@ public class UserController {
     }
 
     @GetMapping("/")
-    public String getMainPage(Principal principal, Map<String, Object> model) {
+    public String getMainPage(Principal principal, Model model) {
         User userActive = (User) userService.loadUserByUsername(principal.getName());
         if (userActive == null) {
-            model.put("username", "имя пользователя");
+            model.addAttribute("username", "имя пользователя");
         } else {
-            model.put("user", userActive);
+            model.addAttribute("user", userActive);
+            model.addAttribute("principal", userActive);
         }
         return "index";
     }
@@ -39,14 +40,16 @@ public class UserController {
     public String updateUser(Principal principal, Model model) {
         User userActive = (User) userService.loadUserByUsername(principal.getName());
         model.addAttribute("user", userActive);
+        model.addAttribute("principal", userActive);
+
         return "user/update";
     }
 
     @PostMapping("/user/{id}")
     public String updateUser(@PathVariable Long id, User user, Model model) {
         User userEntity = userService.updateUser(id, user);
-
         model.addAttribute("user", userEntity);
+        model.addAttribute("principal", userEntity);
 
         return "redirect:/user/"+id;
     }
@@ -58,6 +61,7 @@ public class UserController {
             return "/error/page";
         } else {
             model.addAttribute("user", user);
+            model.addAttribute("principal", user);
             return "/user/detail";
         }
     }
@@ -73,7 +77,7 @@ public class UserController {
         List<User> users = userService.getUsersList();
         model.addAttribute("users", users);
         User userActive = (User) userService.loadUserByUsername(principal.getName());
-        model.addAttribute("user", userActive);
+        model.addAttribute("principal", userActive);
         return "/user/list";
     }
 }
