@@ -1,7 +1,9 @@
 package ru.naumen.javakids.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.naumen.javakids.model.Role;
@@ -21,23 +23,26 @@ public class RegistrationController {
     @Autowired
     private UserRepo userRepo;
 
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @GetMapping("/registration")
     public String registrationUser() {
         return "/user/registration";
     }
 
     @PostMapping("/registration")
-    public String addUser(User user, Map<String, Object> model) {
+    public String addUser(User user, Model model) {
         User userFromDb = userRepo.findByUsername(user.getUsername());
 
         if (userFromDb != null) {
-            model.put("message", "Пользователь уже существует!");
+            model.addAttribute("message", "Пользователь уже существует!");
             return "/user/registration";
         }
 
         Set<Role> roles = new HashSet<>();
         roles.add(Role.USER);
-
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setActive(true);
         user.setRoles(roles);
         userRepo.save(user);
