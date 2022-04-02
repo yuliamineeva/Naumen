@@ -40,6 +40,7 @@ public class RegistrationController {
             return "/user/registration";
         }
 
+        // По умолчанию пользователь с ролью USER создается
         Set<Role> roles = new HashSet<>();
         roles.add(Role.USER);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));

@@ -35,7 +35,6 @@ public class LectureController {
 
         User userActive = (User) userService.loadUserByUsername(principal.getName());
         model.addAttribute("principal", userActive);
-
         return "/lecture/list";
     }
 
@@ -46,7 +45,6 @@ public class LectureController {
 
         User userActive = (User) userService.loadUserByUsername(principal.getName());
         model.addAttribute("principal", userActive);
-
         return "user/lectures";
     }
 
@@ -61,7 +59,6 @@ public class LectureController {
 
         User userActive = (User) userService.loadUserByUsername(principal.getName());
         model.addAttribute("principal", userActive);
-
         return "lecture/detail";
     }
 
@@ -69,7 +66,6 @@ public class LectureController {
     public String createLecture(Principal principal, Model model) {
         User userActive = (User) userService.loadUserByUsername(principal.getName());
         model.addAttribute("principal", userActive);
-
         return "/lecture/add";
     }
 

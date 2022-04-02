@@ -12,6 +12,7 @@
         <div class="mb-3">
             <input type="email" class="form-control" value="{{principal.email}}" name="email" required>
         </div>
+        <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
         <div><input type="submit" class="btn btn-secondary" value="Обновить"/></div>
     </form>
 </div>
