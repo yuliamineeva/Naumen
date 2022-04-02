@@ -12,7 +12,6 @@ import ru.naumen.javakids.services.UserService;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 public class UserController {
@@ -30,8 +29,8 @@ public class UserController {
         if (userActive == null) {
             model.addAttribute("username", "имя пользователя");
         } else {
-            model.put("user", userActive);
-            model.put("principal", userActive);
+            model.addAttribute("user", userActive);
+            model.addAttribute("principal", userActive);
         }
         return "index";
     }
