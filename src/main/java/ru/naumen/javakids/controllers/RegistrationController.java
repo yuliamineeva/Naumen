@@ -47,6 +47,7 @@ public class RegistrationController {
         user.setRoles(roles);
         userRepo.save(user);
 
-        return "redirect:/login";
+        model.addAttribute("message", "Пользователь успешно зарегистрирован!");
+        return "/user/login";
     }
 }

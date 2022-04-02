@@ -34,7 +34,8 @@ public class LectureController {
         model.addAttribute("lectures", lectures);
 
         User userActive = (User) userService.loadUserByUsername(principal.getName());
-        model.addAttribute("user", userActive);
+        model.addAttribute("principal", userActive);
+
         return "/lecture/list";
     }
 
@@ -44,7 +45,8 @@ public class LectureController {
         model.addAttribute("lectures", lectures);
 
         User userActive = (User) userService.loadUserByUsername(principal.getName());
-        model.addAttribute("user", userActive);
+        model.addAttribute("principal", userActive);
+
         return "user/lectures";
     }
 
@@ -58,14 +60,16 @@ public class LectureController {
         }
 
         User userActive = (User) userService.loadUserByUsername(principal.getName());
-        model.addAttribute("user", userActive);
+        model.addAttribute("principal", userActive);
+
         return "lecture/detail";
     }
 
     @GetMapping("/lecture/create")
     public String createLecture(Principal principal, Model model) {
         User userActive = (User) userService.loadUserByUsername(principal.getName());
-        model.addAttribute("user", userActive);
+        model.addAttribute("principal", userActive);
+
         return "/lecture/add";
     }
 

@@ -6,6 +6,9 @@
         <div class="mb-3"><label> Пароль: <input type="password" class="form-control" name="password"/> </label></div>
         <div><input type="submit" class="btn btn-secondary" value="Войти"/></div>
     </form>
+    {{#message}}
+        {{message}}
+    {{/message}}
 </div>
 
 {{> /layout/footer}}
