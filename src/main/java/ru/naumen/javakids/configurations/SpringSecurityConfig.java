@@ -35,9 +35,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .rememberMe()
             .and()
                 .logout()
-                .permitAll()
-            .and().
-                csrf().disable();
+                .permitAll();
     }
 
     @Override

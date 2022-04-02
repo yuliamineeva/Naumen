@@ -24,7 +24,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="collapsibleNavbar">
-                {{#user}}
+                {{#principal}}
                 <ul class="navbar-nav">
                     <li class="nav-item">
                         <a class="nav-link" href="/user/lectures">Мои лекции</a>
@@ -39,8 +39,8 @@
                         <a class="nav-link"> <p style="color:#fff"> Пользователь:  {{user.username}}</p></a>
                     </li>
                 </ul>
-                {{/user}}
-                {{^user}}
+                {{/principal}}
+                {{^principal}}
                 <ul class="navbar-nav">
                     <li class="nav-item">
                         <a class="nav-link" href="/login">Войти</a>
@@ -49,7 +49,7 @@
                         <a class="nav-link" href="/registration">Регистрация</a>
                     </li>
                 </ul>
-                {{/user}}
+                {{/principal}}
             </div>
         </div>
     </nav>
