@@ -41,14 +41,14 @@ public class UserController {
     public String updateUser(Principal principal, Model model) {
         User userActive = (User) userService.loadUserByUsername(principal.getName());
         model.addAttribute("principal", userActive);
+        if (userActive.getRoles().contains(Role.ADMIN)) model.addAttribute("master", Role.ADMIN);
+
         return "user/update";
     }
 
     @PostMapping("/user/{id}")
-    public String updateUser(@PathVariable Long id, User user, Model model) {
-        User userEntity = userService.updateUser(id, user);
-        model.addAttribute("user", userEntity);
-        model.addAttribute("principal", userEntity);
+    public String updateUser(@PathVariable Long id, User user) {
+        userService.updateUser(id, user);
 
         return "redirect:/user/"+id;
     }
@@ -60,6 +60,7 @@ public class UserController {
             return "/error/page";
         } else {
             model.addAttribute("principal", user);
+            if (user.getRoles().contains(Role.ADMIN)) model.addAttribute("master", Role.ADMIN);
             return "/user/detail";
         }
     }
@@ -76,6 +77,8 @@ public class UserController {
         model.addAttribute("users", users);
         User userActive = (User) userService.loadUserByUsername(principal.getName());
         model.addAttribute("principal", userActive);
+        if (userActive.getRoles().contains(Role.ADMIN)) model.addAttribute("master", Role.ADMIN);
+
         return "/user/list";
     }
 }

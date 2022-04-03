@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.naumen.javakids.model.Lecture;
+import ru.naumen.javakids.model.Role;
 import ru.naumen.javakids.model.Status;
 import ru.naumen.javakids.model.User;
 import ru.naumen.javakids.services.LectureService;
@@ -35,6 +36,8 @@ public class LectureController {
 
         User userActive = (User) userService.loadUserByUsername(principal.getName());
         model.addAttribute("principal", userActive);
+        if (userActive.getRoles().contains(Role.ADMIN)) model.addAttribute("master", Role.ADMIN);
+
         return "/lecture/list";
     }
 
@@ -45,6 +48,8 @@ public class LectureController {
 
         User userActive = (User) userService.loadUserByUsername(principal.getName());
         model.addAttribute("principal", userActive);
+        if (userActive.getRoles().contains(Role.ADMIN)) model.addAttribute("master", Role.ADMIN);
+
         return "user/lectures";
     }
 
@@ -59,6 +64,8 @@ public class LectureController {
 
         User userActive = (User) userService.loadUserByUsername(principal.getName());
         model.addAttribute("principal", userActive);
+        if (userActive.getRoles().contains(Role.ADMIN)) model.addAttribute("master", Role.ADMIN);
+
         return "lecture/detail";
     }
 
@@ -66,6 +73,8 @@ public class LectureController {
     public String createLecture(Principal principal, Model model) {
         User userActive = (User) userService.loadUserByUsername(principal.getName());
         model.addAttribute("principal", userActive);
+        if (userActive.getRoles().contains(Role.ADMIN)) model.addAttribute("master", Role.ADMIN);
+
         return "/lecture/add";
     }
 
