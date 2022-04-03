@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import ru.naumen.javakids.model.Role;
 import ru.naumen.javakids.model.User;
 import ru.naumen.javakids.services.UserService;
 
@@ -26,11 +27,12 @@ public class UserController {
     @GetMapping("/")
     public String getMainPage(Principal principal, Model model) {
         User userActive = (User) userService.loadUserByUsername(principal.getName());
-        if (userActive == null) {
-            model.addAttribute("username", "имя пользователя");
-        } else {
-            model.addAttribute("user", userActive);
+        if (userActive != null) {
+            // Для отображения имени пользователя
             model.addAttribute("principal", userActive);
+
+            // Для отображения меню для администратора
+            if (userActive.getRoles().contains(Role.ADMIN)) model.addAttribute("master", Role.ADMIN);
         }
         return "index";
     }
