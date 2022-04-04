@@ -7,21 +7,28 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import ru.naumen.javakids.model.Role;
-import ru.naumen.javakids.model.User;
+import ru.naumen.javakids.model.*;
+import ru.naumen.javakids.services.LectureService;
+import ru.naumen.javakids.services.UserLectureStatusService;
 import ru.naumen.javakids.services.UserService;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class UserController {
 
     private final UserService userService;
+    private final LectureService lectureService;
+    private final UserLectureStatusService userLectureStatusService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, LectureService lectureService,
+                          UserLectureStatusService userLectureStatusService) {
         this.userService = userService;
+        this.lectureService = lectureService;
+        this.userLectureStatusService = userLectureStatusService;
     }
 
     @GetMapping("/")
@@ -80,5 +87,18 @@ public class UserController {
         if (userActive.getRoles().contains(Role.ADMIN)) model.addAttribute("master", Role.ADMIN);
 
         return "/user/list";
+    }
+
+    @GetMapping("/user/lectures")
+    public String getMyLectures(Principal principal, Model model) {
+        User userActive = (User) userService.loadUserByUsername(principal.getName());
+        Set<UserLecture> myLectures = userLectureStatusService.getUserLecturesByUserId(userActive);
+        userActive.setUserLectures(myLectures);
+        userService.saveUser(userActive);
+        model.addAttribute("myLectures", myLectures);
+        model.addAttribute("principal", userActive);
+        if (userActive.getRoles().contains(Role.ADMIN)) model.addAttribute("master", Role.ADMIN);
+
+        return "user/lectures";
     }
 }

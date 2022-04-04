@@ -3,9 +3,17 @@
 <div class="container mt-3">
     <form action="/lecture/{{lecture.id}}" method="post">
         <input type="hidden" id="id" value="{{lecture.id}}">
+       {{#userlecture}}
         <div class="mb-3">
-            Статус лекции: {{lecture.status}}
+            Статус лекции: {{userlecture.status}}
         </div>
+       {{/userlecture}}
+
+        {{^userlecture}}
+            <div class="mb-3">
+                Статус лекции: не определен
+            </div>
+        {{/userlecture}}
         <div class="mb-3 mt-3">
             <h1>{{lecture.topic}}</h1>
         </div>
