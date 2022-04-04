@@ -58,7 +58,7 @@ public class LectureController {
         Optional<Lecture> lectureOp = lectureService.getLectureById(lectureId);
         if (lectureOp.isPresent()) {
             Lecture lecture = lectureOp.get();
-            lecture.setStatus(Status.IN_PROCESS);
+            lecture.setStatus(lectureService.getCorrectStatus(lecture));
             lectureService.saveLecture(lecture);
             model.addAttribute("lecture", lecture);
         } else {
@@ -72,11 +72,17 @@ public class LectureController {
         return "lecture/detail";
     }
 
+
     @PostMapping("/lecture/{id}")
-    public String finishStatusLecture(@PathVariable("id") Long lectureId,Lecture lecture) {
-        // todo не сохраняется статус
-//        lecture.setStatus(Status.FINISHED);
-        lectureService.updateStatusLecture(lectureId, Status.FINISHED);
+    public String finishStatusLecture(@PathVariable("id") Long lectureId) {
+        Optional<Lecture> lectureOp = lectureService.getLectureById(lectureId);
+        if (lectureOp.isPresent()) {
+            Lecture lecture = lectureOp.get();
+            lecture.setStatus(Status.FINISHED);
+            lectureService.saveLecture(lecture);
+        } else {
+            return "/error/page";
+        }
         return "redirect:/user/lectures";
     }
 
