@@ -53,14 +53,14 @@ public class LectureServiceImpl implements LectureService {
     }
 
     @Override
-    public void updateStatusLecture(Long id, Status status) {
-        Optional<Lecture> lectureOp = lectureRepo.findById(id);
-
-        if (lectureOp.isPresent()) {
-            Lecture updLecture = lectureOp.get();
-          //  updLecture.setStatus(status);
-            lectureRepo.save(updLecture);
+    public Status getCorrectStatus(Lecture lecture) {
+        Status currentStatus = lecture.getStatus();
+        if (currentStatus == null) {
+            return Status.NOT_STARTED;
+        } else if (currentStatus == Status.FINISHED) {
+            return Status.FINISHED;
         }
+        return Status.IN_PROCESS;
     }
 
 }

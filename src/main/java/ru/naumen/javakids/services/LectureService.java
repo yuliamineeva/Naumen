@@ -13,6 +13,9 @@ public interface LectureService {
     Optional<Lecture> getLectureById(Long id);
 
     void saveLecture(Lecture lecture);
+
     void updateLecture(Lecture lecture, Long id);
-    void updateStatusLecture(Long id, Status status);
+
+    Status getCorrectStatus(Lecture lecture);
+
 }
