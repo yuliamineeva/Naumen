@@ -11,13 +11,15 @@
     <table>
         <tr>
             <th>Id</th>
-            <th>Topic</th>
+            <th>Тема лекции</th>
+            <th>Изменить лекцию</th>
         </tr>
 
         {{#lectures}}
             <tr>
                 <td>{{id}}</td>
-                <td><a href="/lecture/{{id}}"> {{topic}} </a></td>
+                <td><a href="/lecture/{{id}}"> {{topic}} (просмотр) </a></td>
+                <td><a href="/lecture/{{id}}/update"> изменить </a></td>
             </tr>
         {{/lectures}}
 

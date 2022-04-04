@@ -30,7 +30,7 @@ public class LectureController {
     }
 
     @GetMapping("/lectures")
-    public String getLectures(Principal principal, Model model) {
+    public String getAllLectures(Principal principal, Model model) {
         List<Lecture> lectures = lectureService.getLectures();
         model.addAttribute("lectures", lectures);
 
@@ -56,10 +56,13 @@ public class LectureController {
     @GetMapping(value = "/lecture/{id}")
     public String getLectureById(Principal principal, Model model, @PathVariable("id") Long lectureId) {
         Optional<Lecture> lectureOp = lectureService.getLectureById(lectureId);
-        if (lectureOp.isPresent()){
+        if (lectureOp.isPresent()) {
             Lecture lecture = lectureOp.get();
             lecture.setStatus(Status.IN_PROCESS);
+            lectureService.saveLecture(lecture);
             model.addAttribute("lecture", lecture);
+        } else {
+            return "/error/page";
         }
 
         User userActive = (User) userService.loadUserByUsername(principal.getName());
@@ -67,6 +70,14 @@ public class LectureController {
         if (userActive.getRoles().contains(Role.ADMIN)) model.addAttribute("master", Role.ADMIN);
 
         return "lecture/detail";
+    }
+
+    @PostMapping("/lecture/{id}")
+    public String finishStatusLecture(@PathVariable("id") Long lectureId,Lecture lecture) {
+        // todo не сохраняется статус
+//        lecture.setStatus(Status.FINISHED);
+        lectureService.updateStatusLecture(lectureId, Status.FINISHED);
+        return "redirect:/user/lectures";
     }
 
     @GetMapping("/lecture/create")
@@ -84,5 +95,28 @@ public class LectureController {
         lectureService.saveLecture(lecture);
         model.addAttribute("lecture", lecture);
         return "redirect:/lectures";
+    }
+
+    @GetMapping("/lecture/{id}/update")
+    public String updateLecture(Principal principal, Model model, @PathVariable("id") Long lectureId) {
+        Optional<Lecture> lectureOp = lectureService.getLectureById(lectureId);
+        if (lectureOp.isPresent()) {
+            Lecture lecture = lectureOp.get();
+            model.addAttribute("lecture", lecture);
+        } else {
+            return "/error/page";
+        }
+
+        User userActive = (User) userService.loadUserByUsername(principal.getName());
+        model.addAttribute("principal", userActive);
+        if (userActive.getRoles().contains(Role.ADMIN)) model.addAttribute("master", Role.ADMIN);
+        return "/lecture/update";
+    }
+
+    @PostMapping("/lecture/{id}/update")
+    public String updateLecture(@PathVariable("id") Long lectureId, Lecture lecture) {
+        lectureService.updateLecture(lecture, lectureId);
+
+        return "redirect:/lecture/"+lectureId;
     }
 }

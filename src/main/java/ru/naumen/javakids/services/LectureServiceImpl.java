@@ -58,8 +58,7 @@ public class LectureServiceImpl implements LectureService {
 
         if (lectureOp.isPresent()) {
             Lecture updLecture = lectureOp.get();
-          //  updLecture.setStatus(status);
-            lectureRepo.save(updLecture);
+            updLecture.setStatus(status);
         }
     }
 
