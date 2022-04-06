@@ -3,6 +3,8 @@ package ru.naumen.javakids.model;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "lectures")
@@ -17,9 +19,8 @@ public class Lecture {
     @Type(type = "org.hibernate.type.TextType")
     private String content;
 
-    @Column(name = "status")
-    @Enumerated(EnumType.STRING)
-    private Status status;
+    @OneToMany(mappedBy = "lecture")
+    protected Set<UserLecture> userLectures  = new HashSet<>();
 
     public Lecture() {
     }
@@ -27,7 +28,6 @@ public class Lecture {
     public Lecture(String topic, String content) {
         this.topic = topic;
         this.content = content;
-        this.status = Status.NOT_STARTED;
     }
 
     public Long getId() {
@@ -42,14 +42,6 @@ public class Lecture {
         return content;
     }
 
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
     public void setTopic(String topic) {
         this.topic = topic;
     }
@@ -57,4 +49,13 @@ public class Lecture {
     public void setContent(String content) {
         this.content = content;
     }
+
+    public Set<UserLecture> getUserLectures() {
+        return userLectures;
+    }
+
+    public void setUserLectures(Set<UserLecture> userLectures) {
+        this.userLectures = userLectures;
+    }
+
 }

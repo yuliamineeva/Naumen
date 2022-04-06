@@ -10,9 +10,7 @@ import ru.naumen.javakids.model.Lecture;
 import ru.naumen.javakids.model.User;
 import ru.naumen.javakids.repository.UserRepo;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * @author avzhukov
@@ -44,6 +42,11 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
+    public void saveUser(User user) {
+        userRepo.save(user);
+    }
+
+    @Transactional
     public User updateUser(Long id, User user) {
         Optional<User> userOp = userRepo.findById(id);
 
@@ -61,6 +64,7 @@ public class UserService implements UserDetailsService {
     public List<User> getUsersList() {
         List<User> result = new ArrayList<>();
         userRepo.findAll().forEach(result::add);
+        Collections.sort(result, Comparator.comparingLong(User::getId));
         return result;
     }
 }

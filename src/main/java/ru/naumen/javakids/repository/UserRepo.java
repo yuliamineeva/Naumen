@@ -1,8 +1,10 @@
 package ru.naumen.javakids.repository;
 
 import org.springframework.data.repository.CrudRepository;
+import ru.naumen.javakids.model.Lecture;
 import ru.naumen.javakids.model.User;
 
+import java.util.List;
 import java.util.Optional;
 
 /**

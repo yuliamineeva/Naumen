@@ -4,18 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.naumen.javakids.model.Lecture;
-import ru.naumen.javakids.model.Status;
 import ru.naumen.javakids.repository.LectureRepo;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class LectureServiceImpl implements LectureService {
 
-    private LectureRepo lectureRepo;
-    private List<Lecture> lectures;
+    private final LectureRepo lectureRepo;
 
     @Autowired
     public LectureServiceImpl(LectureRepo lectureRepo) {
@@ -23,8 +19,8 @@ public class LectureServiceImpl implements LectureService {
     }
 
     @Override
-    public List<Lecture> getLectures() {
-        List<Lecture> result = new ArrayList<>();
+    public Set<Lecture> getLectures() {
+        Set<Lecture> result = new HashSet<>();
         lectureRepo.findAll().forEach(result::add);
         return result;
     }
@@ -50,17 +46,6 @@ public class LectureServiceImpl implements LectureService {
             lectureEntity.setTopic(lecture.getTopic());
             lectureEntity.setContent(lecture.getContent());
         }
-    }
-
-    @Override
-    public Status getCorrectStatus(Lecture lecture) {
-        Status currentStatus = lecture.getStatus();
-        if (currentStatus == null) {
-            return Status.NOT_STARTED;
-        } else if (currentStatus == Status.FINISHED) {
-            return Status.FINISHED;
-        }
-        return Status.IN_PROCESS;
     }
 
 }
