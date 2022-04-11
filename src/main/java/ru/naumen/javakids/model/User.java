@@ -27,7 +27,7 @@ public class User implements UserDetails {
     private Set<Role> roles;
 
     public boolean isAdmin() {
-        return roles.contains(Role.ADMIN);
+        return roles.contains(Role.ROLE_ADMIN);
     }
 
     @OneToMany(mappedBy = "user")

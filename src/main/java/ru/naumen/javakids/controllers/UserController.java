@@ -39,7 +39,7 @@ public class UserController {
             model.addAttribute("principal", userActive);
 
             // Для отображения меню для администратора
-            if (userActive.getRoles().contains(Role.ADMIN)) model.addAttribute("master", Role.ADMIN);
+            if (userActive.getRoles().contains(Role.ROLE_ADMIN)) model.addAttribute("master", Role.ROLE_ADMIN);
         }
         return "index";
     }
@@ -48,7 +48,7 @@ public class UserController {
     public String updateUser(Principal principal, Model model) {
         User userActive = (User) userService.loadUserByUsername(principal.getName());
         model.addAttribute("principal", userActive);
-        if (userActive.getRoles().contains(Role.ADMIN)) model.addAttribute("master", Role.ADMIN);
+        if (userActive.getRoles().contains(Role.ROLE_ADMIN)) model.addAttribute("master", Role.ROLE_ADMIN);
 
         return "user/update";
     }
@@ -67,7 +67,7 @@ public class UserController {
             return "/error/page";
         } else {
             model.addAttribute("principal", user);
-            if (user.getRoles().contains(Role.ADMIN)) model.addAttribute("master", Role.ADMIN);
+            if (user.getRoles().contains(Role.ROLE_ADMIN)) model.addAttribute("master", Role.ROLE_ADMIN);
             return "/user/detail";
         }
     }
@@ -84,7 +84,7 @@ public class UserController {
         model.addAttribute("users", users);
         User userActive = (User) userService.loadUserByUsername(principal.getName());
         model.addAttribute("principal", userActive);
-        if (userActive.getRoles().contains(Role.ADMIN)) model.addAttribute("master", Role.ADMIN);
+        if (userActive.getRoles().contains(Role.ROLE_ADMIN)) model.addAttribute("master", Role.ROLE_ADMIN);
 
         return "/user/list";
     }
@@ -97,7 +97,7 @@ public class UserController {
         userService.saveUser(userActive);
         model.addAttribute("myLectures", myLectures);
         model.addAttribute("principal", userActive);
-        if (userActive.getRoles().contains(Role.ADMIN)) model.addAttribute("master", Role.ADMIN);
+        if (userActive.getRoles().contains(Role.ROLE_ADMIN)) model.addAttribute("master", Role.ROLE_ADMIN);
 
         return "user/lectures";
     }
