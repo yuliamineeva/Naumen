@@ -18,14 +18,18 @@
         <tr>
             <th>Id</th>
             <th>Topic</th>
+            {{^master}}
             <th>Status</th>
+            {{/master}}
         </tr>
 
         {{#myLectures}}
             <tr>
                 <td>{{id.lectureId}}</td>
                 <td><a href="/lecture/{{id.lectureId}}"> {{lecture.topic}} </a></td>
+                {{^master}}
                 <td>{{status}}</td>
+                {{/master}}
 
             </tr>
         {{/myLectures}}

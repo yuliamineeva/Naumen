@@ -12,8 +12,7 @@ import ru.naumen.javakids.services.UserLectureStatusService;
 import ru.naumen.javakids.services.UserService;
 
 import java.security.Principal;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 public class LectureController {
@@ -32,7 +31,9 @@ public class LectureController {
     @GetMapping("/lectures")
     public String getAllLectures(Principal principal, Model model) {
         Set<Lecture> lectures = lectureService.getLectures();
-        model.addAttribute("lectures", lectures);
+        List<Lecture> lecturesList = new ArrayList<>(lectures);
+        lecturesList.sort(Comparator.comparingLong(Lecture::getId));
+        model.addAttribute("lectures", lecturesList);
 
         User userActive = (User) userService.loadUserByUsername(principal.getName());
         model.addAttribute("principal", userActive);
@@ -53,8 +54,8 @@ public class LectureController {
             model.addAttribute("lecture", lecture);
             Optional<UserLecture> userLectureOp =
                     userLectureStatusService.getUserLectureById(
-                            new UserLecture.Id(userActive.getId(),lecture.getId()));
-            if(userLectureOp.isPresent()){
+                            new UserLecture.Id(userActive.getId(), lecture.getId()));
+            if (userLectureOp.isPresent()) {
                 UserLecture userLecture = userLectureOp.get();
                 userLecture.setStatus(userLectureStatusService.getCorrectStatus(userLecture));
                 userLectureStatusService.updateUserLecture(userLecture, userLecture.getId());
@@ -74,7 +75,7 @@ public class LectureController {
         User userActive = (User) userService.loadUserByUsername(principal.getName());
         Optional<UserLecture> userLectureOp =
                 userLectureStatusService.getUserLectureById(
-                        new UserLecture.Id(userActive.getId(),lectureId));
+                        new UserLecture.Id(userActive.getId(), lectureId));
         if (userLectureOp.isPresent()) {
             UserLecture userLecture = userLectureOp.get();
             userLecture.setStatus(Status.FINISHED);
@@ -121,6 +122,6 @@ public class LectureController {
     public String updateLecture(@PathVariable("id") Long lectureId, Lecture lecture) {
         lectureService.updateLecture(lecture, lectureId);
 
-        return "redirect:/lecture/"+lectureId;
+        return "redirect:/lecture/" + lectureId;
     }
 }

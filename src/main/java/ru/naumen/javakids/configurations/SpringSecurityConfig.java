@@ -45,7 +45,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
-                .antMatchers("/lectures","/update","/create","/users").hasRole("ADMIN")
+                .antMatchers("/lectures","/lecture/**/update","/lecture/create","/users").hasRole("ADMIN")
                 .antMatchers("/login","/registration").permitAll()
                 .anyRequest().authenticated()
             .and()
@@ -56,6 +56,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .rememberMe()
             .and()
                 .logout()
-                .permitAll();
+                .permitAll()
+            .and()
+                .exceptionHandling().accessDeniedPage("/403");
     }
 }
