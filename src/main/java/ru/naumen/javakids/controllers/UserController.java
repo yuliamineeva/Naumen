@@ -13,8 +13,7 @@ import ru.naumen.javakids.services.UserLectureStatusService;
 import ru.naumen.javakids.services.UserService;
 
 import java.security.Principal;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 public class UserController {
@@ -42,6 +41,16 @@ public class UserController {
             if (userActive.getRoles().contains(Role.ROLE_ADMIN)) model.addAttribute("master", Role.ROLE_ADMIN);
         }
         return "index";
+    }
+
+    @GetMapping("/403")
+    public String accesssDenied(Principal principal, Model model) {
+        User userActive = (User) userService.loadUserByUsername(principal.getName());
+        if (userActive != null) {
+            model.addAttribute("principal", userActive);
+            model.addAttribute("msg", " У вас нет прав администратора!");
+        }
+        return "/error/403";
     }
 
     @GetMapping("/user/update")
@@ -95,7 +104,9 @@ public class UserController {
         Set<UserLecture> myLectures = userLectureStatusService.getUserLecturesByUserId(userActive);
         userActive.setUserLectures(myLectures);
         userService.saveUser(userActive);
-        model.addAttribute("myLectures", myLectures);
+        List<UserLecture> myLecturesList = new ArrayList<>(myLectures);
+        myLecturesList.sort(Comparator.comparingLong(userLecture -> userLecture.getLecture().getId()));
+        model.addAttribute("myLectures", myLecturesList);
         model.addAttribute("principal", userActive);
         if (userActive.getRoles().contains(Role.ROLE_ADMIN)) model.addAttribute("master", Role.ROLE_ADMIN);
 

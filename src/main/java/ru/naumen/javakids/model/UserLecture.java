@@ -46,7 +46,6 @@ public class UserLecture {
     @EmbeddedId
     protected Id id = new Id();
 
-    //    @Column(name = "status", updatable = false)
     @Column(name = "status")
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -85,5 +84,9 @@ public class UserLecture {
 
     public Id getId() {
         return id;
+    }
+
+    public Lecture getLecture() {
+        return lecture;
     }
 }
