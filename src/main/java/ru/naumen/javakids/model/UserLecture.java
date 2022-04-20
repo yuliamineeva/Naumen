@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "userlectures_table")
-public class UserLecture {
+public class UserLecture implements Serializable {
 
     public UserLecture() {
     }
@@ -89,4 +89,9 @@ public class UserLecture {
     public Lecture getLecture() {
         return lecture;
     }
+
+    public User getUser() {
+        return user;
+    }
+
 }

@@ -48,4 +48,9 @@ public class LectureServiceImpl implements LectureService {
         }
     }
 
+    @Override
+    public void deleteLecture(Long id) {
+        lectureRepo.deleteById(id);
+    }
+
 }

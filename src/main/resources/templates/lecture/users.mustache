@@ -1,0 +1,40 @@
+{{> /layout/header}}
+
+<style>
+    table {
+        border-collapse: collapse;
+    }
+
+    table, td, th {
+        border: 1px solid #999;
+        padding: 5px;
+    }
+</style>
+
+<div class="container mt-3">
+    <input type="hidden" id="id" value="{{principal.id}}">
+
+        <div class="mb-3">
+            Список всех UserLecture по лекции
+        </div>
+    <table>
+        <tr>
+            <th>Id лекции</th>
+            <th>Id пользователя</th>
+            <th>Имя пользователя</th>
+            <th>email</th>
+        </tr>
+
+        {{#userlectures}}
+            <tr>
+                <td>{{lecture.id}}</td>
+                <td>{{user.id}}</td>
+                <td>{{user.username}}</td>
+                <td>{{user.email}}</td>
+            </tr>
+        {{/userlectures}}
+
+    </table>
+</div>
+
+{{> /layout/footer}}

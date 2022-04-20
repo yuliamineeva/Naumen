@@ -44,20 +44,21 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-            .authorizeRequests()
-                .antMatchers("/lectures","/lecture/**/update","/lecture/create","/users").hasRole("ADMIN")
-                .antMatchers("/login","/registration").permitAll()
+                .authorizeRequests()
+                .antMatchers("/lectures", "/lecture/**/update", "/lecture/**/delete",
+                        "/lecture/**/users", "/lecture/create", "/users").hasRole("ADMIN")
+                .antMatchers("/login", "/registration").permitAll()
                 .anyRequest().authenticated()
-            .and()
+                .and()
                 .formLogin()
                 .loginPage("/login")
                 .permitAll()
-            .and()
+                .and()
                 .rememberMe()
-            .and()
+                .and()
                 .logout()
                 .permitAll()
-            .and()
+                .and()
                 .exceptionHandling().accessDeniedPage("/403");
     }
 }
