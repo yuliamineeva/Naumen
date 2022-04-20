@@ -53,6 +53,12 @@ public class UserLectureStatusService {
         return result;
     }
 
+    public Set<UserLecture> getUserLecturesByLectureId(Long lectureId) {
+        Set<UserLecture> result = new HashSet<>();
+        result.addAll(userLectureStatusRepo.findByIdLectureId(lectureId));
+        return result;
+    }
+
     public Optional<UserLecture> getUserLectureById(UserLecture.Id id) {
         return userLectureStatusRepo.findById(id);
     }
@@ -70,6 +76,11 @@ public class UserLectureStatusService {
             UserLecture userLectureEntity = userLectureOp.get();
             userLectureEntity.setStatus(userLecture.getStatus());
         }
+    }
+
+    @Transactional
+    public void deleteUserLecture(UserLecture.Id id) {
+        userLectureStatusRepo.deleteById(id);
     }
 
     public Status getCorrectStatus(UserLecture userLecture) {

@@ -3,12 +3,13 @@ package ru.naumen.javakids.model;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "lectures")
-public class Lecture {
+public class Lecture implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

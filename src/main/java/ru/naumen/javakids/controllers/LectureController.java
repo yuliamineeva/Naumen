@@ -3,9 +3,7 @@ package ru.naumen.javakids.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.naumen.javakids.model.*;
 import ru.naumen.javakids.services.LectureService;
 import ru.naumen.javakids.services.UserLectureStatusService;
@@ -123,5 +121,46 @@ public class LectureController {
         lectureService.updateLecture(lecture, lectureId);
 
         return "redirect:/lecture/" + lectureId;
+    }
+
+    //    @DeleteMapping("/lecture/{id}/delete") // не работает
+    @RequestMapping(value = "/lecture/{id}/delete", method = {RequestMethod.GET, RequestMethod.POST})
+    public String deleteLecture(Principal principal, Model model, @PathVariable("id") Long lectureId) {
+        User userActive = (User) userService.loadUserByUsername(principal.getName());
+        Optional<Lecture> lectureOp = lectureService.getLectureById(lectureId);
+        if (lectureOp.isPresent()) {
+            Lecture lecture = lectureOp.get();
+            model.addAttribute("lecture", lecture);
+            Set<UserLecture> userLectures = userLectureStatusService.getUserLecturesByLectureId(lectureId);
+            for (UserLecture userLecture : userLectures) {
+                userLectureStatusService.deleteUserLecture(userLecture.getId());
+            }
+            lectureService.deleteLecture(lectureId);
+        } else {
+            return "/error/page";
+        }
+        model.addAttribute("principal", userActive);
+        if (userActive.getRoles().contains(Role.ROLE_ADMIN)) model.addAttribute("master", Role.ROLE_ADMIN);
+        return "/lecture/delete";
+    }
+
+    @GetMapping("/lecture/{id}/users")
+    public String getUserLectures(Principal principal, Model model, @PathVariable("id") Long lectureId) {
+        User userActive = (User) userService.loadUserByUsername(principal.getName());
+        Optional<Lecture> lectureOp = lectureService.getLectureById(lectureId);
+        if (lectureOp.isPresent()) {
+            Lecture lecture = lectureOp.get();
+            model.addAttribute("lecture", lecture);
+            Set<UserLecture> userLectures = userLectureStatusService.getUserLecturesByLectureId(lectureId);
+            List<UserLecture> userLecturesList = new ArrayList<>(userLectures);
+            userLecturesList.sort(Comparator.comparingLong(userLecture -> userLecture.getUser().getId()));
+            model.addAttribute("userlectures", userLecturesList);
+        } else {
+            return "/error/page";
+        }
+
+        model.addAttribute("principal", userActive);
+        if (userActive.getRoles().contains(Role.ROLE_ADMIN)) model.addAttribute("master", Role.ROLE_ADMIN);
+        return "/lecture/users";
     }
 }
