@@ -9,10 +9,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.naumen.javakids.model.*;
 import ru.naumen.javakids.services.LectureService;
+import ru.naumen.javakids.services.UserExcelExporter;
 import ru.naumen.javakids.services.UserLectureStatusService;
 import ru.naumen.javakids.services.UserService;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.security.Principal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
@@ -111,5 +116,22 @@ public class UserController {
         if (userActive.getRoles().contains(Role.ROLE_ADMIN)) model.addAttribute("master", Role.ROLE_ADMIN);
 
         return "user/lectures";
+    }
+
+    @GetMapping("/users/export/excel")
+    public void exportToExcel(HttpServletResponse response) throws IOException {
+        response.setContentType("application/octet-stream");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=users_" + currentDateTime + ".xlsx";
+        response.setHeader(headerKey, headerValue);
+
+        List<User> users = userService.getUsersList();
+
+        UserExcelExporter excelExporter = new UserExcelExporter(users);
+
+        excelExporter.export(response);
     }
 }
