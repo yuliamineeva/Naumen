@@ -71,7 +71,7 @@ public class UserController {
     public String updateUser(@PathVariable Long id, User user) {
         userService.updateUser(id, user);
 
-        return "redirect:/user/"+id;
+        return "redirect:/user/" + id;
     }
 
     @GetMapping("/user/{id}")

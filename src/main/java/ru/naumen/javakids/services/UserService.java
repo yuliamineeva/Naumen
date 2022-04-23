@@ -7,7 +7,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.naumen.javakids.model.Lecture;
 import ru.naumen.javakids.model.Role;
 import ru.naumen.javakids.model.User;
 import ru.naumen.javakids.repository.UserRepo;
@@ -59,11 +58,19 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public User updateUser(Long id, User user) {
-        user.setId(id);
-        user.setActive(true);
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        return userRepo.save(user);
+    public Optional<User> updateUser(Long id, User user) {
+        Optional<User> userOp = userRepo.findById(id);
+
+        if (userOp.isPresent()) {
+            user.setId(id);
+            user.setActive(userOp.get().isActive());
+            user.setRoles(userOp.get().getRoles());
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            userRepo.save(user);
+            return userRepo.findById(id);
+        } else {
+            return userOp;
+        }
     }
 
     public List<User> getUsersList() {
