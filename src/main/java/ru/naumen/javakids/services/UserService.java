@@ -61,6 +61,7 @@ public class UserService implements UserDetailsService {
     @Transactional
     public User updateUser(Long id, User user) {
         user.setId(id);
+        user.setActive(true);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         return userRepo.save(user);
     }
