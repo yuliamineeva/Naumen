@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.naumen.javakids.model.Lecture;
+import ru.naumen.javakids.model.Role;
 import ru.naumen.javakids.model.User;
 import ru.naumen.javakids.repository.UserRepo;
 
@@ -21,6 +23,9 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private UserRepo userRepo;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -43,22 +48,21 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public void saveUser(User user) {
+        // По умолчанию пользователь с ролью USER создается
+        Set<Role> roles = new HashSet<>();
+        roles.add(Role.ROLE_USER);
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setActive(true);
+        user.setRoles(roles);
+
         userRepo.save(user);
     }
 
     @Transactional
     public User updateUser(Long id, User user) {
-        Optional<User> userOp = userRepo.findById(id);
-
-        if (userOp.isPresent()) {
-            User userEntity = userOp.get();
-            userEntity.setPassword(user.getPassword());
-            userEntity.setEmail(user.getEmail());
-
-            return userEntity;
-        }
-
-        return null;
+        user.setId(id);
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        return userRepo.save(user);
     }
 
     public List<User> getUsersList() {
