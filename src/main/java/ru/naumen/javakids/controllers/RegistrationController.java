@@ -1,8 +1,7 @@
 package ru.naumen.javakids.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,14 +28,17 @@ public class RegistrationController {
     public String addUser(User user, Model model) {
 
         try {
-            userService.loadUserByUsername(user.getUsername());
-        } catch (UsernameNotFoundException e) {
-            userService.saveUser(user);
-            model.addAttribute("message", "Пользователь успешно зарегистрирован!");
-            return "/user/login";
+            if (user.getUsername().isEmpty() || user.getPassword().isEmpty() || user.getEmail().isEmpty()) {
+                model.addAttribute("message", "Необходимо заполнить все поля!");
+                return "/user/registration";
+            } else {
+                userService.saveUser(user);
+                model.addAttribute("message", "Пользователь успешно зарегистрирован!");
+                return "/user/login";
+            }
+        } catch (DataIntegrityViolationException e) {
+            model.addAttribute("message", "Пользователь уже существует!");
+            return "/user/registration";
         }
-
-        model.addAttribute("message", "Пользователь уже существует!");
-        return "/user/registration";
     }
 }
