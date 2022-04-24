@@ -36,6 +36,12 @@ public class UserLecture {
             insertable = false, updatable = false)
     protected Lecture lecture;
 
+    @ManyToOne
+    @JoinColumn(
+            name = "grade_id",
+            insertable = false, updatable = false)
+    protected Grade grade;
+
     public UserLecture(User user, Lecture lecture, Status status) {
         this.user = user;
         this.lecture = lecture;
