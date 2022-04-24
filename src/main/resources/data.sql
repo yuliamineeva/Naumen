@@ -8,7 +8,7 @@ WHERE NOT EXISTS (SELECT id
 
 INSERT INTO public.user_role
 SELECT (SELECT id FROM public.user_table WHERE username = 'admin') AS id, 'ROLE_ADMIN'
-WHERE NOT EXISTS (SELECT user_id FROM public.user_role WHERE user_id = (SELECT id FROM public.user_table WHERE username = 'admin'));
+WHERE NOT EXISTS (SELECT user_id FROM public.user_role WHERE user_id = (SELECT id FROM public.user_table WHERE username = 'admin' LIMIT 1));
 
 
 /*

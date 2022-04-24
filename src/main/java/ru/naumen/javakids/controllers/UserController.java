@@ -108,7 +108,6 @@ public class UserController {
         User userActive = (User) userService.loadUserByUsername(principal.getName());
         Set<UserLecture> myLectures = userLectureStatusService.getUserLecturesByUserId(userActive);
         userActive.setUserLectures(myLectures);
-        userService.saveUser(userActive);
         List<UserLecture> myLecturesList = new ArrayList<>(myLectures);
         myLecturesList.sort(Comparator.comparingLong(userLecture -> userLecture.getLecture().getId()));
         model.addAttribute("myLectures", myLecturesList);
