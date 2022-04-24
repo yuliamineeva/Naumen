@@ -17,10 +17,11 @@
     <table>
         <tr>
             <th>Id</th>
-            <th>Topic</th>
+            <th>Название</th>
             {{^master}}
-            <th>Status</th>
+            <th>Статус</th>
             {{/master}}
+            <th>Оценка</th>
         </tr>
 
         {{#myLectures}}
@@ -30,7 +31,7 @@
                 {{^master}}
                 <td>{{status}}</td>
                 {{/master}}
-
+                <td>{{#grade}}{{grade.value}}{{/grade}}</td>
             </tr>
         {{/myLectures}}
 
