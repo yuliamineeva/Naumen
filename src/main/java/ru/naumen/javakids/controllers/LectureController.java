@@ -6,7 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.naumen.javakids.model.*;
 import ru.naumen.javakids.services.LectureService;
-import ru.naumen.javakids.services.UserLectureStatusService;
+import ru.naumen.javakids.services.UserLectureService;
 import ru.naumen.javakids.services.UserService;
 
 import java.security.Principal;
@@ -16,13 +16,13 @@ import java.util.*;
 public class LectureController {
 
     private final LectureService lectureService;
-    private final UserLectureStatusService userLectureStatusService;
+    private final UserLectureService userLectureService;
     private final UserService userService;
 
     @Autowired
-    public LectureController(LectureService lectureService, UserLectureStatusService userLectureStatusService, UserService userService) {
+    public LectureController(LectureService lectureService, UserLectureService userLectureService, UserService userService) {
         this.lectureService = lectureService;
-        this.userLectureStatusService = userLectureStatusService;
+        this.userLectureService = userLectureService;
         this.userService = userService;
     }
 
@@ -51,13 +51,13 @@ public class LectureController {
             Lecture lecture = lectureOp.get();
             model.addAttribute("lecture", lecture);
             Optional<UserLecture> userLectureOp =
-                    userLectureStatusService.getUserLectureById(
+                    userLectureService.getUserLectureById(
                             new UserLecture.Id(userActive.getId(), lecture.getId()));
             if (userLectureOp.isPresent()) {
                 UserLecture userLecture = userLectureOp.get();
-                userLecture.setStatus(userLectureStatusService.getCorrectStatus(userLecture));
-                userLectureStatusService.updateUserLecture(userLecture, userLecture.getId());
-                userLectureStatusService.saveUserLecture(userLecture);
+                userLecture.setStatus(userLectureService.getCorrectStatus(userLecture));
+                userLectureService.updateUserLecture(userLecture, userLecture.getId());
+                userLectureService.saveUserLecture(userLecture);
                 model.addAttribute("userlecture", userLecture);
             }
 
@@ -72,12 +72,12 @@ public class LectureController {
     public String finishStatusLecture(@PathVariable("id") Long lectureId, Principal principal) {
         User userActive = (User) userService.loadUserByUsername(principal.getName());
         Optional<UserLecture> userLectureOp =
-                userLectureStatusService.getUserLectureById(
+                userLectureService.getUserLectureById(
                         new UserLecture.Id(userActive.getId(), lectureId));
         if (userLectureOp.isPresent()) {
             UserLecture userLecture = userLectureOp.get();
             userLecture.setStatus(Status.SENT_FOR_REVIEW);
-            userLectureStatusService.saveUserLecture(userLecture);
+            userLectureService.saveUserLecture(userLecture);
         } else {
             return "/error/page";
         }
@@ -131,9 +131,9 @@ public class LectureController {
         if (lectureOp.isPresent()) {
             Lecture lecture = lectureOp.get();
             model.addAttribute("lecture", lecture);
-            Set<UserLecture> userLectures = userLectureStatusService.getUserLecturesByLectureId(lectureId);
+            Set<UserLecture> userLectures = userLectureService.getUserLecturesByLectureId(lectureId);
             for (UserLecture userLecture : userLectures) {
-                userLectureStatusService.deleteUserLecture(userLecture.getId());
+                userLectureService.deleteUserLecture(userLecture.getId());
             }
             lectureService.deleteLecture(lectureId);
         } else {
@@ -151,7 +151,7 @@ public class LectureController {
         if (lectureOp.isPresent()) {
             Lecture lecture = lectureOp.get();
             model.addAttribute("lecture", lecture);
-            Set<UserLecture> userLectures = userLectureStatusService.getUserLecturesByLectureId(lectureId);
+            Set<UserLecture> userLectures = userLectureService.getUserLecturesByLectureId(lectureId);
             List<UserLecture> userLecturesList = new ArrayList<>(userLectures);
             userLecturesList.sort(Comparator.comparingLong(userLecture -> userLecture.getUser().getId()));
             model.addAttribute("userlectures", userLecturesList);
