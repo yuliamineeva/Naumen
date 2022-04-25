@@ -76,7 +76,7 @@ public class LectureController {
                         new UserLecture.Id(userActive.getId(), lectureId));
         if (userLectureOp.isPresent()) {
             UserLecture userLecture = userLectureOp.get();
-            userLecture.setStatus(Status.SENT_FOR_REVIEW);
+            userLecture.setStatus(Status.FINISHED);
             userLectureService.saveUserLecture(userLecture);
         } else {
             return "/error/page";
