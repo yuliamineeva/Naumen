@@ -1,5 +1,8 @@
 package ru.naumen.javakids.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -7,6 +10,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "lectures")
 public class Lecture {
 
@@ -21,41 +26,4 @@ public class Lecture {
 
     @OneToMany(mappedBy = "lecture")
     protected Set<UserLecture> userLectures  = new HashSet<>();
-
-    public Lecture() {
-    }
-
-    public Lecture(String topic, String content) {
-        this.topic = topic;
-        this.content = content;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getTopic() {
-        return topic;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setTopic(String topic) {
-        this.topic = topic;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public Set<UserLecture> getUserLectures() {
-        return userLectures;
-    }
-
-    public void setUserLectures(Set<UserLecture> userLectures) {
-        this.userLectures = userLectures;
-    }
-
 }

@@ -1,10 +1,21 @@
 package ru.naumen.javakids.model;
 
-public enum Status {
-    NOT_STARTED,
-    IN_PROCESS,
-    FINISHED;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-    Status() {
+@Getter
+@RequiredArgsConstructor
+public enum Status {
+    NOT_STARTED("Не начиналась"),
+    IN_PROCESS("В процессе"),
+    SENT_FOR_REVIEW("Отправлена на проверку"),
+    NOT_CREDITED("Не зачтено"),
+    FINISHED("Завершена");
+
+    private final String description;
+
+    @Override
+    public String toString() {
+        return description;
     }
 }

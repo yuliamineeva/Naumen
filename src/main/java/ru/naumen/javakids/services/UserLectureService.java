@@ -8,31 +8,30 @@ import ru.naumen.javakids.model.Status;
 import ru.naumen.javakids.model.User;
 import ru.naumen.javakids.model.UserLecture;
 import ru.naumen.javakids.repository.LectureRepo;
-import ru.naumen.javakids.repository.UserLectureStatusRepo;
+import ru.naumen.javakids.repository.UserLectureRepo;
 
 import java.util.*;
 
 @Service
-public class UserLectureStatusService {
+public class UserLectureService {
 
-    private final UserLectureStatusRepo userLectureStatusRepo;
+    private final UserLectureRepo userLectureRepo;
     private final LectureRepo lectureRepo;
 
     @Autowired
-    public UserLectureStatusService(UserLectureStatusRepo userLectureStatusRepo, LectureRepo lectureRepo) {
-        this.userLectureStatusRepo = userLectureStatusRepo;
+    public UserLectureService(UserLectureRepo userLectureRepo, LectureRepo lectureRepo) {
+        this.userLectureRepo = userLectureRepo;
         this.lectureRepo = lectureRepo;
     }
 
     public Set<UserLecture> getUserLectures() {
         Set<UserLecture> result = new HashSet<>();
-        userLectureStatusRepo.findAll().forEach(result::add);
+        userLectureRepo.findAll().forEach(result::add);
         return result;
     }
 
     public Set<UserLecture> getUserLecturesByUserId(User user) {
-        Set<UserLecture> result = new HashSet<>();
-        result.addAll(userLectureStatusRepo.findByIdUserId(user.getId()));
+        Set<UserLecture> result = new HashSet<>(userLectureRepo.findByIdUserId(user.getId()));
 
         Set<Lecture> lectures = new HashSet<>();
         lectureRepo.findAll().forEach(lectures::add);
@@ -46,7 +45,7 @@ public class UserLectureStatusService {
             } else {
                 UserLecture userLecture = new UserLecture(user, lecture, Status.NOT_STARTED);
                 result.add(userLecture);
-                userLectureStatusRepo.save(userLecture);
+                userLectureRepo.save(userLecture);
             }
         }
 
@@ -54,23 +53,21 @@ public class UserLectureStatusService {
     }
 
     public Set<UserLecture> getUserLecturesByLectureId(Long lectureId) {
-        Set<UserLecture> result = new HashSet<>();
-        result.addAll(userLectureStatusRepo.findByIdLectureId(lectureId));
-        return result;
+        return new HashSet<>(userLectureRepo.findByIdLectureId(lectureId));
     }
 
     public Optional<UserLecture> getUserLectureById(UserLecture.Id id) {
-        return userLectureStatusRepo.findById(id);
+        return userLectureRepo.findById(id);
     }
 
     @Transactional
     public void saveUserLecture(UserLecture userLecture) {
-        userLectureStatusRepo.save(userLecture);
+        userLectureRepo.save(userLecture);
     }
 
     @Transactional
     public void updateUserLecture(UserLecture userLecture, UserLecture.Id id) {
-        Optional<UserLecture> userLectureOp = userLectureStatusRepo.findById(id);
+        Optional<UserLecture> userLectureOp = userLectureRepo.findById(id);
 
         if (userLectureOp.isPresent()) {
             UserLecture userLectureEntity = userLectureOp.get();
@@ -80,7 +77,7 @@ public class UserLectureStatusService {
 
     @Transactional
     public void deleteUserLecture(UserLecture.Id id) {
-        userLectureStatusRepo.deleteById(id);
+        userLectureRepo.deleteById(id);
     }
 
     public Status getCorrectStatus(UserLecture userLecture) {

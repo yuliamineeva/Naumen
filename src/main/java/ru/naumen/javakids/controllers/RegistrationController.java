@@ -37,7 +37,7 @@ public class RegistrationController {
                 return "/user/login";
             }
         } catch (DataIntegrityViolationException e) {
-            model.addAttribute("message", "Пользователь уже существует!");
+            model.addAttribute("message", "Пользователь с таким логином или e-mail уже существует!");
             return "/user/registration";
         }
     }

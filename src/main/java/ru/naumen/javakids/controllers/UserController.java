@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import ru.naumen.javakids.model.*;
 import ru.naumen.javakids.services.LectureService;
 import ru.naumen.javakids.services.UserExcelExporter;
-import ru.naumen.javakids.services.UserLectureStatusService;
+import ru.naumen.javakids.services.UserLectureService;
 import ru.naumen.javakids.services.UserService;
 
 import javax.servlet.http.HttpServletResponse;
@@ -25,14 +25,14 @@ public class UserController {
 
     private final UserService userService;
     private final LectureService lectureService;
-    private final UserLectureStatusService userLectureStatusService;
+    private final UserLectureService userLectureService;
 
     @Autowired
     public UserController(UserService userService, LectureService lectureService,
-                          UserLectureStatusService userLectureStatusService) {
+                          UserLectureService userLectureService) {
         this.userService = userService;
         this.lectureService = lectureService;
-        this.userLectureStatusService = userLectureStatusService;
+        this.userLectureService = userLectureService;
     }
 
     @GetMapping("/")
@@ -106,9 +106,8 @@ public class UserController {
     @GetMapping("/user/lectures")
     public String getMyLectures(Principal principal, Model model) {
         User userActive = (User) userService.loadUserByUsername(principal.getName());
-        Set<UserLecture> myLectures = userLectureStatusService.getUserLecturesByUserId(userActive);
+        Set<UserLecture> myLectures = userLectureService.getUserLecturesByUserId(userActive);
         userActive.setUserLectures(myLectures);
-        userService.saveUser(userActive);
         List<UserLecture> myLecturesList = new ArrayList<>(myLectures);
         myLecturesList.sort(Comparator.comparingLong(userLecture -> userLecture.getLecture().getId()));
         model.addAttribute("myLectures", myLecturesList);

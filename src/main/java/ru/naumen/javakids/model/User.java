@@ -1,5 +1,7 @@
 package ru.naumen.javakids.model;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -11,6 +13,8 @@ import java.util.*;
  * @since 17.03.2022
  */
 @Entity
+@Getter
+@Setter
 @Table(name = "user_table")
 public class User implements UserDetails {
     @Id
@@ -20,6 +24,8 @@ public class User implements UserDetails {
     @Column(unique = true)
     private String username;
     private String password;
+
+    @Column(unique = true)
     private String email;
     private boolean active;
 
@@ -58,61 +64,5 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return isActive();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Set<UserLecture> getUserLectures() {
-        return userLectures;
-    }
-
-    public void setUserLectures(Set<UserLecture> userLectures) {
-        this.userLectures = userLectures;
     }
 }

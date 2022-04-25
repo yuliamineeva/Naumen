@@ -1,47 +1,20 @@
 package ru.naumen.javakids.model;
 
 import com.sun.istack.NotNull;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 @Table(name = "userlectures_table")
 public class UserLecture {
-
-    public UserLecture() {
-    }
-
-    @Embeddable
-    public static class Id implements Serializable {
-
-        @Column(name = "user_id")
-        protected Long userId;
-
-        @Column(name = "lecture_id")
-        protected Long lectureId;
-
-        public Id() {
-        }
-
-        public Id(Long userId, Long lectureId) {
-            this.userId = userId;
-            this.lectureId = lectureId;
-        }
-
-        public boolean equals(Object o) {
-            if (o != null && o instanceof Id) {
-                Id that = (Id) o;
-                return this.userId.equals(that.userId)
-                        && this.lectureId.equals(that.lectureId);
-            }
-            return false;
-        }
-
-        public int hashCode() {
-            return userId.hashCode() + lectureId.hashCode();
-        }
-    }
 
     @EmbeddedId
     protected Id id = new Id();
@@ -63,6 +36,12 @@ public class UserLecture {
             insertable = false, updatable = false)
     protected Lecture lecture;
 
+    @ManyToOne
+    @JoinColumn(
+            name = "grade_id",
+            insertable = false, updatable = false)
+    protected Grade grade;
+
     public UserLecture(User user, Lecture lecture, Status status) {
         this.user = user;
         this.lecture = lecture;
@@ -74,24 +53,20 @@ public class UserLecture {
         lecture.getUserLectures().add(this);
     }
 
-    public Status getStatus() {
-        return status;
-    }
+    @Embeddable
+    @Data
+    @NoArgsConstructor
+    public static class Id implements Serializable {
 
-    public void setStatus(Status status) {
-        this.status = status;
-    }
+        @Column(name = "user_id")
+        protected Long userId;
 
-    public Id getId() {
-        return id;
-    }
+        @Column(name = "lecture_id")
+        protected Long lectureId;
 
-    public Lecture getLecture() {
-        return lecture;
+        public Id(Long userId, Long lectureId) {
+            this.userId = userId;
+            this.lectureId = lectureId;
+        }
     }
-
-    public User getUser() {
-        return user;
-    }
-
 }
