@@ -4,6 +4,14 @@
     <div class="mb-3 mt-3">
         Добро пожаловать: {{principal.username}}<br>
     </div>
+    <br><br>
+    {{#master}}
+        <a href="/lecture/create">Добавить новую лекцию</a><br><br>
+        <a href="/lectures">Список всех лекций</a> <br><br>
+        <a href="/lectures/users">Информация о прохождении лекций пользователями</a> <br><br>
+        <a href="/users">Список всех пользователей</a> <br><br>
+    {{/master}}
+
 </div>
 
 {{> /layout/footer}}

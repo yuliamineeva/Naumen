@@ -37,9 +37,7 @@ public class UserLecture {
     protected Lecture lecture;
 
     @ManyToOne
-    @JoinColumn(
-            name = "grade_id",
-            insertable = false, updatable = false)
+    @JoinColumn(name= "grade_id")
     protected Grade grade;
 
     public UserLecture(User user, Lecture lecture, Status status) {

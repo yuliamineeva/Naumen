@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.naumen.javakids.model.*;
 import ru.naumen.javakids.services.LectureService;
-import ru.naumen.javakids.services.UserExcelExporter;
+import ru.naumen.javakids.services.ReportExcelExporter;
 import ru.naumen.javakids.services.UserLectureService;
 import ru.naumen.javakids.services.UserService;
 
@@ -117,6 +117,28 @@ public class UserController {
         return "user/lectures";
     }
 
+    @GetMapping("/user/{id}/lectures")
+    public String getUserLectures(Principal principal, @PathVariable Long id, Model model) {
+        User userActive = (User) userService.loadUserByUsername(principal.getName());
+        if (userActive.getRoles().contains(Role.ROLE_ADMIN)) model.addAttribute("master", Role.ROLE_ADMIN);
+        model.addAttribute("principal", userActive);
+
+        User user = userService.loadUserById(id);
+        if (user == null) {
+            return "/error/page";
+        } else {
+            model.addAttribute("user", user);
+
+            Set<UserLecture> userLectures = userLectureService.getUserLecturesByUserId(user);
+            user.setUserLectures(userLectures);
+            List<UserLecture> userLecturesList = new ArrayList<>(userLectures);
+            userLecturesList.sort(Comparator.comparingLong(userLecture -> userLecture.getLecture().getId()));
+            model.addAttribute("userLectures", userLecturesList);
+
+            return "user/userlectures";
+        }
+    }
+
     @GetMapping("/users/export/excel")
     public void exportToExcel(HttpServletResponse response) throws IOException {
         response.setContentType("application/octet-stream");
@@ -129,8 +151,8 @@ public class UserController {
 
         List<User> users = userService.getUsersList();
 
-        UserExcelExporter excelExporter = new UserExcelExporter(users);
+        ReportExcelExporter excelExporter = new ReportExcelExporter(users);
 
-        excelExporter.export(response);
+        excelExporter.exportUsers(response, "users");
     }
 }
