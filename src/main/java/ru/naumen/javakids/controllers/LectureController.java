@@ -6,10 +6,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.naumen.javakids.model.*;
 import ru.naumen.javakids.services.LectureService;
+import ru.naumen.javakids.services.ReportExcelExporter;
 import ru.naumen.javakids.services.UserLectureService;
 import ru.naumen.javakids.services.UserService;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.security.Principal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
@@ -162,5 +167,42 @@ public class LectureController {
         model.addAttribute("principal", userActive);
         if (userActive.getRoles().contains(Role.ROLE_ADMIN)) model.addAttribute("master", Role.ROLE_ADMIN);
         return "/lecture/users";
+    }
+
+    @GetMapping("/lectures/users")
+    public String getUserLecturesList(Principal principal, Model model) {
+        Set<Lecture> lectures = lectureService.getLectures();
+        Set<UserLecture> allUserLectures = new HashSet<>();
+        for (Lecture lecture : lectures) {
+            Set<UserLecture> userLectures = userLectureService.getUserLecturesByLectureId(lecture.getId());
+            allUserLectures.addAll(userLectures);
+        }
+        List<UserLecture> userLecturesList = new ArrayList<>(allUserLectures);
+        userLecturesList.sort(Comparator.comparingLong(userLecture -> userLecture.getLecture().getId()));
+        model.addAttribute("userlectures", userLecturesList);
+
+        User userActive = (User) userService.loadUserByUsername(principal.getName());
+        model.addAttribute("principal", userActive);
+        if (userActive.getRoles().contains(Role.ROLE_ADMIN)) model.addAttribute("master", Role.ROLE_ADMIN);
+        return "/lecture/users";
+    }
+
+    @GetMapping("/lectures/export/excel")
+    public void exportToExcel(HttpServletResponse response) throws IOException {
+        response.setContentType("application/octet-stream");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=lectures_" + currentDateTime + ".xlsx";
+        response.setHeader(headerKey, headerValue);
+
+        Set<Lecture> lectures = lectureService.getLectures();
+        List<Lecture> lecturesList = new ArrayList<>(lectures);
+        lecturesList.sort(Comparator.comparingLong(Lecture::getId));
+
+        ReportExcelExporter excelExporter = new ReportExcelExporter(lecturesList, "Lectures");
+
+        excelExporter.exportUsers(response, "lectures");
     }
 }

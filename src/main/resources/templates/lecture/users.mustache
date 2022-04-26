@@ -14,15 +14,24 @@
 <div class="container mt-3">
     <input type="hidden" id="id" value="{{principal.id}}">
 
+    {{^lecture}}
         <div class="mb-3">
-            Список всех UserLecture по лекции
+            Информация о прохождении лекций пользователями
         </div>
+    {{/lecture}}
+
+    {{#lecture}}
+        <div class="mb-3">
+            Информация о лекции "{{lecture.topic}}" <br>
+            Детализация по пользователям
+        </div>
+    {{/lecture}}
     <table>
         <tr>
             <th>Id лекции</th>
             <th>Id пользователя</th>
             <th>Имя пользователя</th>
-            <th>email</th>
+            <th>Статус лекции</th>
         </tr>
 
         {{#userlectures}}
@@ -30,11 +39,20 @@
                 <td>{{lecture.id}}</td>
                 <td>{{user.id}}</td>
                 <td>{{user.username}}</td>
-                <td>{{user.email}}</td>
+                <td>{{status}}</td>
             </tr>
         {{/userlectures}}
 
     </table>
+
+    <br><br>
+    {{#lecture}}
+        <a href="/lectures">Назад</a> <br>
+    {{/lecture}}
+
+    {{^lecture}}
+        <a href="/">Назад</a> <br>
+    {{/lecture}}
 </div>
 
 {{> /layout/footer}}

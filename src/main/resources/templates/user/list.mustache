@@ -23,6 +23,7 @@
             <th>Id</th>
             <th>Имя пользователя</th>
             <th>email</th>
+            <th>Информация об обучении </th>
         </tr>
 
         {{#users}}
@@ -30,6 +31,7 @@
                 <td>{{id}}</td>
                 <td>{{username}}</td>
                 <td>{{email}}</td>
+                <td><a href="/user/{{id}}/lectures"> Посмотреть </a></td>
             </tr>
         {{/users}}
 
