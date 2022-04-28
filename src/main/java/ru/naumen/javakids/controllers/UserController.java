@@ -151,7 +151,7 @@ public class UserController {
 
         List<User> users = userService.getUsersList();
 
-        ReportExcelExporter excelExporter = new ReportExcelExporter(users);
+        ReportExcelExporter excelExporter = new ReportExcelExporter(users, "Users");
 
         excelExporter.exportUsers(response, "users");
     }

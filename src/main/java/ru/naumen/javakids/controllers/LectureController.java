@@ -155,7 +155,7 @@ public class LectureController {
         Optional<Lecture> lectureOp = lectureService.getLectureById(lectureId);
         if (lectureOp.isPresent()) {
             Lecture lecture = lectureOp.get();
-            model.addAttribute("lecture", lecture);
+            model.addAttribute("currentlecture", lecture);
             Set<UserLecture> userLectures = userLectureService.getUserLecturesByLectureId(lectureId);
             List<UserLecture> userLecturesList = new ArrayList<>(userLectures);
             userLecturesList.sort(Comparator.comparingLong(userLecture -> userLecture.getUser().getId()));
@@ -188,21 +188,35 @@ public class LectureController {
     }
 
     @GetMapping("/lectures/export/excel")
-    public void exportToExcel(HttpServletResponse response) throws IOException {
-        response.setContentType("application/octet-stream");
-        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
-        String currentDateTime = dateFormatter.format(new Date());
-
-        String headerKey = "Content-Disposition";
-        String headerValue = "attachment; filename=lectures_" + currentDateTime + ".xlsx";
-        response.setHeader(headerKey, headerValue);
+    public void exportToExcelLectures(HttpServletResponse response) throws IOException {
+        configureResponse(response, "lectures");
 
         Set<Lecture> lectures = lectureService.getLectures();
         List<Lecture> lecturesList = new ArrayList<>(lectures);
         lecturesList.sort(Comparator.comparingLong(Lecture::getId));
 
         ReportExcelExporter excelExporter = new ReportExcelExporter(lecturesList, "Lectures");
-
         excelExporter.exportUsers(response, "lectures");
+    }
+
+    private void configureResponse(HttpServletResponse response, String filename) {
+        response.setContentType("application/octet-stream");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=" + filename +"_" + currentDateTime + ".xlsx";
+        response.setHeader(headerKey, headerValue);
+    }
+
+    @GetMapping("/lectures/users/export/excel")
+    public void exportToExcelUserLectures(HttpServletResponse response) throws IOException {
+        configureResponse(response, "userlectures");
+
+        Set<UserLecture> allUserLectures = userLectureService.getUserLectures();
+        List<UserLecture> userLecturesList = new ArrayList<>(allUserLectures);
+        userLecturesList.sort(Comparator.comparingLong(userLecture -> userLecture.getLecture().getId()));
+
+        ReportExcelExporter excelExporter = new ReportExcelExporter(userLecturesList, "UserLectures");
+        excelExporter.exportUsers(response, "userLectures");
     }
 }

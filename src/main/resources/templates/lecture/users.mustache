@@ -14,21 +14,24 @@
 <div class="container mt-3">
     <input type="hidden" id="id" value="{{principal.id}}">
 
-    {{^lecture}}
+    {{^currentlecture}}
         <div class="mb-3">
-            Информация о прохождении лекций пользователями
+            Информация о прохождении лекций пользователями  <a href="/lectures/users/export/excel"> Загрузить в Excel</a><br>
         </div>
-    {{/lecture}}
+    {{/currentlecture}}
 
-    {{#lecture}}
+    {{#currentlecture}}
         <div class="mb-3">
-            Информация о лекции "{{lecture.topic}}" <br>
+            Информация о лекции "{{currentlecture.topic}}" <br>
             Детализация по пользователям
         </div>
-    {{/lecture}}
+    {{/currentlecture}}
     <table>
         <tr>
             <th>Id лекции</th>
+            {{^currentlecture}}
+                <th>Тема лекции</th>
+            {{/currentlecture}}
             <th>Id пользователя</th>
             <th>Имя пользователя</th>
             <th>Статус лекции</th>
@@ -37,6 +40,9 @@
         {{#userlectures}}
             <tr>
                 <td>{{lecture.id}}</td>
+                {{^currentlecture}}
+                    <td>{{lecture.topic}}</td>
+                {{/currentlecture}}
                 <td>{{user.id}}</td>
                 <td>{{user.username}}</td>
                 <td>{{status}}</td>
@@ -46,13 +52,13 @@
     </table>
 
     <br><br>
-    {{#lecture}}
+    {{#currentlecture}}
         <a href="/lectures">Назад</a> <br>
-    {{/lecture}}
+    {{/currentlecture}}
 
-    {{^lecture}}
+    {{^currentlecture}}
         <a href="/">Назад</a> <br>
-    {{/lecture}}
+    {{/currentlecture}}
 </div>
 
 {{> /layout/footer}}

@@ -2,37 +2,62 @@ package ru.naumen.javakids.services;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import ru.naumen.javakids.model.Lecture;
 import ru.naumen.javakids.model.User;
+import ru.naumen.javakids.model.UserLecture;
 
 public class ReportExcelExporter {
-    private XSSFWorkbook workbook;
+    private final XSSFWorkbook workbook;
     private XSSFSheet sheet;
     private List<User> users;
     private List<Lecture> lectures;
+    private List<UserLecture> userLectures;
     private String description;
 
-    public ReportExcelExporter(List<User> listUsers) {
-        this.users = listUsers;
+    public <T> ReportExcelExporter(List<T> list, String description) {
         workbook = new XSSFWorkbook();
+        this.description = description;
+        switch (description) {
+            case "Users":
+                this.users = (List<User>) list;
+                break;
+            case "Lectures":
+                this.lectures = (List<Lecture>) list;
+                break;
+            case "UserLectures":
+                this.userLectures = (List<UserLecture>) list;
+                break;
+        }
     }
 
-    public ReportExcelExporter(List<Lecture> lectures, String description) {
-        this.lectures = lectures;
-        this.description = description;
-        workbook = new XSSFWorkbook();
-    }
+//    public ReportExcelExporter(Set<UserLecture> userLectures) {
+//        this.userLectures = userLectures;
+//        workbook = new XSSFWorkbook();
+//    }
+
+//    public ReportExcelExporter(List<User> listUsers) {
+//        this.users = listUsers;
+//        workbook = new XSSFWorkbook();
+//    }
+//
+//    public ReportExcelExporter(List<Lecture> lectures, String description) {
+//        this.lectures = lectures;
+//        this.description = description;
+//        workbook = new XSSFWorkbook();
+//    }
 
     private void writeHeaderLineUsers() {
-        sheet = workbook.createSheet("Users");
+        sheet = workbook.createSheet(description);
         Row row = sheet.createRow(0);
         CellStyle style = getCellStyleHeaderLine();
         createCell(row, 0, "Id пользователя", style);
@@ -47,6 +72,17 @@ public class ReportExcelExporter {
         CellStyle style = getCellStyleHeaderLine();
         createCell(row, 0, "Id лекции", style);
         createCell(row, 1, "Тема лекции", style);
+    }
+
+    private void writeHeaderLineUserLectures() {
+        sheet = workbook.createSheet(description);
+        Row row = sheet.createRow(0);
+        CellStyle style = getCellStyleHeaderLine();
+        createCell(row, 0, "Id лекции", style);
+        createCell(row, 1, "Тема лекции", style);
+        createCell(row, 2, "Id пользователя", style);
+        createCell(row, 3, "Имя пользователя", style);
+        createCell(row, 4, "Статус лекции", style);
     }
 
     private CellStyle getCellStyleHeaderLine() {
@@ -81,7 +117,7 @@ public class ReportExcelExporter {
             createCell(row, columnCount++, user.getId(), style);
             createCell(row, columnCount++, user.getRoles().toString(), style);
             createCell(row, columnCount++, user.getUsername(), style);
-            createCell(row, columnCount++, user.getEmail(), style);
+            createCell(row, columnCount, user.getEmail(), style);
         }
     }
 
@@ -93,7 +129,22 @@ public class ReportExcelExporter {
             Row row = sheet.createRow(rowCount++);
             int columnCount = 0;
             createCell(row, columnCount++, lecture.getId(), style);
-            createCell(row, columnCount++, lecture.getTopic(), style);
+            createCell(row, columnCount, lecture.getTopic(), style);
+        }
+    }
+
+    private void writeDataLinesUserLectures() {
+        int rowCount = 1;
+        CellStyle style = getCellStyleDataLines();
+
+        for (UserLecture userLecture : userLectures) {
+            Row row = sheet.createRow(rowCount++);
+            int columnCount = 0;
+            createCell(row, columnCount++, userLecture.getLecture().getId(), style);
+            createCell(row, columnCount++, userLecture.getLecture().getTopic(), style);
+            createCell(row, columnCount++, userLecture.getUser().getId(), style);
+            createCell(row, columnCount++, userLecture.getUser().getUsername(), style);
+            createCell(row, columnCount, userLecture.getStatus().toString(), style);
         }
     }
 
@@ -116,6 +167,10 @@ public class ReportExcelExporter {
             case "lectures":
                 writeHeaderLineLectures();
                 writeDataLinesLectures();
+                break;
+            case "userLectures":
+                writeHeaderLineUserLectures();
+                writeDataLinesUserLectures();
                 break;
         }
         ServletOutputStream outputStream = response.getOutputStream();
