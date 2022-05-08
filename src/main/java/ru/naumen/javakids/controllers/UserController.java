@@ -8,30 +8,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.naumen.javakids.model.*;
-import ru.naumen.javakids.services.LectureService;
-import ru.naumen.javakids.services.ReportExcelExporter;
 import ru.naumen.javakids.services.UserLectureService;
 import ru.naumen.javakids.services.UserService;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.security.Principal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
 public class UserController {
 
     private final UserService userService;
-    private final LectureService lectureService;
     private final UserLectureService userLectureService;
 
     @Autowired
-    public UserController(UserService userService, LectureService lectureService,
-                          UserLectureService userLectureService) {
+    public UserController(UserService userService, UserLectureService userLectureService) {
         this.userService = userService;
-        this.lectureService = lectureService;
         this.userLectureService = userLectureService;
     }
 
@@ -49,7 +40,7 @@ public class UserController {
     }
 
     @GetMapping("/403")
-    public String accesssDenied(Principal principal, Model model) {
+    public String accessDenied(Principal principal, Model model) {
         User userActive = (User) userService.loadUserByUsername(principal.getName());
         if (userActive != null) {
             model.addAttribute("principal", userActive);
@@ -128,7 +119,6 @@ public class UserController {
             return "/error/page";
         } else {
             model.addAttribute("user", user);
-
             Set<UserLecture> userLectures = userLectureService.getUserLecturesByUserId(user);
             user.setUserLectures(userLectures);
             List<UserLecture> userLecturesList = new ArrayList<>(userLectures);
@@ -139,20 +129,4 @@ public class UserController {
         }
     }
 
-    @GetMapping("/users/export/excel")
-    public void exportToExcel(HttpServletResponse response) throws IOException {
-        response.setContentType("application/octet-stream");
-        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
-        String currentDateTime = dateFormatter.format(new Date());
-
-        String headerKey = "Content-Disposition";
-        String headerValue = "attachment; filename=users_" + currentDateTime + ".xlsx";
-        response.setHeader(headerKey, headerValue);
-
-        List<User> users = userService.getUsersList();
-
-        ReportExcelExporter excelExporter = new ReportExcelExporter(users, "Users");
-
-        excelExporter.exportUsers(response, "users");
-    }
 }

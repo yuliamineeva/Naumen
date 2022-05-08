@@ -6,15 +6,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.naumen.javakids.model.*;
 import ru.naumen.javakids.services.LectureService;
-import ru.naumen.javakids.services.ReportExcelExporter;
 import ru.naumen.javakids.services.UserLectureService;
 import ru.naumen.javakids.services.UserService;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.security.Principal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
@@ -65,11 +60,9 @@ public class LectureController {
                 userLectureService.saveUserLecture(userLecture);
                 model.addAttribute("userlecture", userLecture);
             }
-
         } else {
             return "/error/page";
         }
-
         return "lecture/detail";
     }
 
@@ -94,7 +87,6 @@ public class LectureController {
         User userActive = (User) userService.loadUserByUsername(principal.getName());
         model.addAttribute("principal", userActive);
         if (userActive.getRoles().contains(Role.ROLE_ADMIN)) model.addAttribute("master", Role.ROLE_ADMIN);
-
         return "/lecture/add";
     }
 
@@ -124,7 +116,6 @@ public class LectureController {
     @PostMapping("/lecture/{id}/update")
     public String updateLecture(@PathVariable("id") Long lectureId, Lecture lecture) {
         lectureService.updateLecture(lecture, lectureId);
-
         return "redirect:/lecture/" + lectureId;
     }
 
@@ -187,36 +178,4 @@ public class LectureController {
         return "/lecture/users";
     }
 
-    @GetMapping("/lectures/export/excel")
-    public void exportToExcelLectures(HttpServletResponse response) throws IOException {
-        configureResponse(response, "lectures");
-
-        Set<Lecture> lectures = lectureService.getLectures();
-        List<Lecture> lecturesList = new ArrayList<>(lectures);
-        lecturesList.sort(Comparator.comparingLong(Lecture::getId));
-
-        ReportExcelExporter excelExporter = new ReportExcelExporter(lecturesList, "Lectures");
-        excelExporter.exportUsers(response, "lectures");
-    }
-
-    private void configureResponse(HttpServletResponse response, String filename) {
-        response.setContentType("application/octet-stream");
-        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
-        String currentDateTime = dateFormatter.format(new Date());
-        String headerKey = "Content-Disposition";
-        String headerValue = "attachment; filename=" + filename +"_" + currentDateTime + ".xlsx";
-        response.setHeader(headerKey, headerValue);
-    }
-
-    @GetMapping("/lectures/users/export/excel")
-    public void exportToExcelUserLectures(HttpServletResponse response) throws IOException {
-        configureResponse(response, "userlectures");
-
-        Set<UserLecture> allUserLectures = userLectureService.getUserLectures();
-        List<UserLecture> userLecturesList = new ArrayList<>(allUserLectures);
-        userLecturesList.sort(Comparator.comparingLong(userLecture -> userLecture.getLecture().getId()));
-
-        ReportExcelExporter excelExporter = new ReportExcelExporter(userLecturesList, "UserLectures");
-        excelExporter.exportUsers(response, "userLectures");
-    }
 }
