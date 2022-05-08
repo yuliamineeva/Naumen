@@ -76,7 +76,7 @@ public class UserService implements UserDetailsService {
     public List<User> getUsersList() {
         List<User> result = new ArrayList<>();
         userRepo.findAll().forEach(result::add);
-        Collections.sort(result, Comparator.comparingLong(User::getId));
+        result.sort(Comparator.comparingLong(User::getId));
         return result;
     }
 }

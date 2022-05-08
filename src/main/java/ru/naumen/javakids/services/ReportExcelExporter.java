@@ -2,12 +2,10 @@ package ru.naumen.javakids.services;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -16,6 +14,9 @@ import ru.naumen.javakids.model.Lecture;
 import ru.naumen.javakids.model.User;
 import ru.naumen.javakids.model.UserLecture;
 
+/**
+ * This class loads reports to Excel
+ */
 public class ReportExcelExporter {
     private final XSSFWorkbook workbook;
     private XSSFSheet sheet;
@@ -39,22 +40,6 @@ public class ReportExcelExporter {
                 break;
         }
     }
-
-//    public ReportExcelExporter(Set<UserLecture> userLectures) {
-//        this.userLectures = userLectures;
-//        workbook = new XSSFWorkbook();
-//    }
-
-//    public ReportExcelExporter(List<User> listUsers) {
-//        this.users = listUsers;
-//        workbook = new XSSFWorkbook();
-//    }
-//
-//    public ReportExcelExporter(List<Lecture> lectures, String description) {
-//        this.lectures = lectures;
-//        this.description = description;
-//        workbook = new XSSFWorkbook();
-//    }
 
     private void writeHeaderLineUsers() {
         sheet = workbook.createSheet(description);
@@ -158,7 +143,7 @@ public class ReportExcelExporter {
         return style;
     }
 
-    public void exportUsers(HttpServletResponse response, String report) throws IOException {
+    public void exportToExcel(HttpServletResponse response, String report) throws IOException {
         switch (report) {
             case "users":
                 writeHeaderLineUsers();

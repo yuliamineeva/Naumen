@@ -48,7 +48,6 @@ public class UserLectureService {
                 userLectureRepo.save(userLecture);
             }
         }
-
         return result;
     }
 
