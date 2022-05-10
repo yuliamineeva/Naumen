@@ -26,6 +26,12 @@ public class UserController {
         this.userLectureService = userLectureService;
     }
 
+    /**
+     * Главная страница
+     * @param principal Пользователь
+     * @param model Информация по пользователю для отображения
+     * @return Главная страница
+     */
     @GetMapping("/")
     public String getMainPage(Principal principal, Model model) {
         User userActive = (User) userService.loadUserByUsername(principal.getName());
@@ -49,6 +55,12 @@ public class UserController {
         return "/error/403";
     }
 
+    /**
+     * Страница обновления пользователя
+     * @param principal Пользователь
+     * @param model Информация по пользователю для отображения
+     * @return URL user/update
+     */
     @GetMapping("/user/update")
     public String updateUser(Principal principal, Model model) {
         User userActive = (User) userService.loadUserByUsername(principal.getName());
@@ -58,6 +70,12 @@ public class UserController {
         return "user/update";
     }
 
+    /**
+     * Обновление польователя
+     * @param user Пользователь
+     * @param id ID пользователя
+     * @return Страница с обновленным пользователем
+     */
     @PostMapping("/user/{id}")
     public String updateUser(@PathVariable Long id, User user) {
         userService.updateUser(id, user);
@@ -65,6 +83,12 @@ public class UserController {
         return "redirect:/user/" + id;
     }
 
+    /**
+     * Страница с информацией по пользователю
+     * @param id ID пользователя
+     * @param model Модель пользователя
+     * @return Страница с информацией по пользователю
+     */
     @GetMapping("/user/{id}")
     public String getUserDetail(@PathVariable Long id, Model model) {
         User user = userService.loadUserById(id);
@@ -77,12 +101,22 @@ public class UserController {
         }
     }
 
+    /**
+     * Выход из сессии
+     * @return переход на страницу авторизации
+     */
     @GetMapping("/logout")
     public String logout() {
         SecurityContextHolder.clearContext();
         return "redirect:/login";
     }
 
+    /**
+     * Возвращает всех пользователей
+     * @principal Пользователь
+     * @param model Модель для списка пользователей
+     * @return URL user/list
+     */
     @GetMapping("/users")
     public String getUsersList(Principal principal, Model model){
         List<User> users = userService.getUsersList();
@@ -94,6 +128,12 @@ public class UserController {
         return "/user/list";
     }
 
+    /**
+     * Список лекций пользователя
+     * @param principal Пользователь
+     * @param model Модель для списка лекций
+     * @return URL user/lectures
+     */
     @GetMapping("/user/lectures")
     public String getMyLectures(Principal principal, Model model) {
         User userActive = (User) userService.loadUserByUsername(principal.getName());
@@ -108,6 +148,13 @@ public class UserController {
         return "user/lectures";
     }
 
+    /**
+     * Список лекций по конкретному пользователю (у админа)
+     * @param principal Пользователь
+     * @param id ID лекции
+     * @param model Модель для списка лекций
+     * @return Список лекций по конкретному пользователю
+     */
     @GetMapping("/user/{id}/lectures")
     public String getUserLectures(Principal principal, @PathVariable Long id, Model model) {
         User userActive = (User) userService.loadUserByUsername(principal.getName());
