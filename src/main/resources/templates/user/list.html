@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:insert="~{fragments/common :: meta}"></th:block>
+    <th:block th:insert="~{fragments/common :: title}"></th:block>
+    <th:block th:insert="~{fragments/common :: link}"></th:block>
+</head>
+<body>
+<th:block th:insert="fragments/common :: header"></th:block>
+<div class="container mt-3">
+    <h3>Список всех пользователей:</h3>
+
+    <div class="my-3">
+        <a href="/users/export/excel"> Загрузить в Excel</a><br>
+    </div>
+
+    <table>
+        <tr>
+            <th>Id</th>
+            <th>Имя пользователя</th>
+            <th>email</th>
+            <th>Информация об обучении </th>
+        </tr>
+        <tr th:each="user : ${users}">
+            <td th:utext="${user.id}">id</td>
+            <td th:utext="${user.username}">username</td>
+            <td th:utext="${user.email}">email</td>
+            <td><a th:href="@{'/user/' + ${user.id} + '/lectures'}"> Посмотреть </a></td>
+        </tr>
+    </table>
+</div>
+
+<th:block th:insert="fragments/common :: footer"></th:block>
+</body>
+</html>

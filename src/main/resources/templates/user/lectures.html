@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <th:block th:insert="~{fragments/common :: meta}"></th:block>
+    <th:block th:insert="~{fragments/common :: title}"></th:block>
+    <th:block th:insert="~{fragments/common :: link}"></th:block>
+</head>
+<body>
+<th:block th:insert="fragments/common :: header"></th:block>
+<div class="container mt-3">
+    <h3 sec:authorize="isAuthenticated() and !hasRole('ROLE_ADMIN')">Мои лекции:</h3>
+    <h3 sec:authorize="hasRole('ROLE_ADMIN')">Информация по пользователю: <a th:utext="${user.username}"></a></h3>
+    <table>
+        <tr>
+            <th>Id</th>
+            <th>Название</th>
+            <th>Статус</th>
+            <th sec:authorize="isAuthenticated() and !hasRole('ROLE_ADMIN')">URL</th>
+        </tr>
+        <tr th:each="userLecture : ${userLectureList}">
+            <td th:utext="${userLecture.lecture.id}">id</td>
+            <td th:utext="${userLecture.lecture.topic}">name</td>
+            <td th:utext="${userLecture.status}">status</td>
+            <td>
+                <a th:href="@{'/lecture/' + ${userLecture.lecture.id}}" sec:authorize="isAuthenticated() and !hasRole('ROLE_ADMIN')">Перейти к лекции</a>
+            </td>
+        </tr>
+    </table>
+    <a th:href="@{'/users'}" sec:authorize="hasRole('ROLE_ADMIN')">Назад</a>
+</div>
+
+<th:block th:insert="fragments/common :: footer"></th:block>
+</body>
+</html>

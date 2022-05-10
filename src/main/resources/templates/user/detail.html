@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <th:block th:insert="~{fragments/common :: meta}"></th:block>
+    <th:block th:insert="~{fragments/common :: title}"></th:block>
+    <th:block th:insert="~{fragments/common :: link}"></th:block>
+</head>
+<body>
+<th:block th:insert="fragments/common :: header"></th:block>
+<div class="container mt-3">
+    <form action="/user/update" method="get">
+        <div class="mb-3 mt-3">
+            <label>Имя пользователя:</label>
+            <td th:utext="${user.username}">login</td>
+        </div>
+        <div class="mb-3">
+            <label>E-mail:</label>
+            <td th:utext="${user.email}">email</td>
+        </div>
+        <div><input type="submit" class="btn btn-secondary" value="Изменить"/></div>
+    </form>
+</div>
+
+<th:block th:insert="fragments/common :: footer"></th:block>
+</body>
+</html>

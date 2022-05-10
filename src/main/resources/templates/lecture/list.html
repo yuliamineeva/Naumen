@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <th:block th:insert="~{fragments/common :: meta}"></th:block>
+    <th:block th:insert="~{fragments/common :: title}"></th:block>
+    <th:block th:insert="~{fragments/common :: link}"></th:block>
+</head>
+<body>
+<th:block th:insert="fragments/common :: header"></th:block>
+<style>
+    table {
+        border-collapse: collapse;
+    }
+
+    table, td, th {
+        border: 1px solid #999;
+        padding: 10px;
+    }
+</style>
+
+<div class="container mt-3">
+    <div class="my-3" align="center">
+       Добавить <a th:href="@{/lecture/create}">новую лекцию</a>
+    </div>
+
+    <h3>Список всех лекций:</h3>
+    <a th:href="@{/lectures/export/excel}"> Загрузить в Excel</a><br>
+
+    <table>
+        <tr>
+            <th>Id</th>
+            <th>Тема лекции</th>
+            <th>URL</th>
+            <th>Просмотр пользователей</th>
+            <th>Изменить лекцию</th>
+            <th>Удалить лекцию</th>
+        </tr>
+        <tr th:each="lecture : ${lecturesList}">
+            <td th:utext="${lecture.id}">id</td>
+            <td th:utext="${lecture.topic}">topic</td>
+            <td>
+                <a th:href="@{'/lecture/' + ${lecture.id}}">Перейти к лекции</a>
+            </td>
+            <td>
+                <a th:href="@{'/lecture/' + ${lecture.id} + '/users/'}">Просмотр пользователей</a>
+            </td>
+            <td>
+                <a th:href="@{'/lecture/' + ${lecture.id} + '/update/'}">Изменить</a>
+            </td>
+            <td>
+                <a th:href="@{'/lecture/' + ${lecture.id} + '/delete/'}">Удалить</a>
+            </td>
+        </tr>
+    </table>
+<br><br>
+    <a th:href="@{/}" sec:authorize="hasRole('ROLE_ADMIN')">Назад</a> <br>
+</div>
+<th:block th:insert="fragments/common :: footer"></th:block>
+</body>
+</html>

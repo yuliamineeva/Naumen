@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+  <th:block th:insert="~{fragments/common :: meta}"></th:block>
+  <th:block th:insert="~{fragments/common :: title}"></th:block>
+  <th:block th:insert="~{fragments/common :: link}"></th:block>
+</head>
+<body>
+<div class="sticky-top" th:insert="fragments/common :: header"></div>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-8 offset-sm-2 border-dark shadow bg-white rounded">
+      <div class="alert alert-danger m-5 p-3">
+        <h1 th:text="${msg}"></h1>
+      </div>
+    </div>
+  </div>
+</div>
+
+<th:block th:insert="fragments/common :: footer"></th:block>
+</body>
+</html>
