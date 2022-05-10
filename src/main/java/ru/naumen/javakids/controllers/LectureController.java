@@ -26,6 +26,12 @@ public class LectureController {
         this.userService = userService;
     }
 
+    /**
+     * Страница со списком всех лекций
+     * @param principal Пользователь
+     * @param model Модель для списка лекций
+     * @return Список всех лекций
+     */
     @GetMapping("/lectures")
     public String getAllLectures(Principal principal, Model model) {
         Set<Lecture> lectures = lectureService.getLectures();
@@ -40,6 +46,13 @@ public class LectureController {
         return "/lecture/list";
     }
 
+    /**
+     * Страница лекции
+     * @param principal Пользователь
+     * @param model Модель для лекции
+     * @param lectureId Id лекции
+     * @return URL lecture/detail
+     */
     @GetMapping(value = "/lecture/{id}")
     public String getLectureById(Principal principal, Model model, @PathVariable("id") Long lectureId) {
         User userActive = (User) userService.loadUserByUsername(principal.getName());
@@ -66,6 +79,12 @@ public class LectureController {
         return "lecture/detail";
     }
 
+    /**
+     * Обновление статуса лекции на FINISHED
+     * @param lectureId Id лекции
+     * @param principal Пользователь
+     * @return Страница лекций пользователя
+     */
     @PostMapping("/lecture/{id}")
     public String finishStatusLecture(@PathVariable("id") Long lectureId, Principal principal) {
         User userActive = (User) userService.loadUserByUsername(principal.getName());
@@ -82,6 +101,10 @@ public class LectureController {
         return "redirect:/user/lectures";
     }
 
+    /**
+     * Страница создания лекции
+     * @return URL lecture/add"
+     */
     @GetMapping("/lecture/create")
     public String createLecture(Principal principal, Model model) {
         User userActive = (User) userService.loadUserByUsername(principal.getName());
@@ -90,6 +113,12 @@ public class LectureController {
         return "/lecture/add";
     }
 
+    /**
+     * Создание лекции
+     * @param lecture Лекция
+     * @param model Модель для лекции
+     * @return Страница с лекциями
+     */
     @PostMapping("/lecture/create")
     public String createLecture(Lecture lecture, Model model) {
         lectureService.saveLecture(lecture);
@@ -97,6 +126,12 @@ public class LectureController {
         return "redirect:/lectures";
     }
 
+    /**
+     * Страница для обновления лекции
+     * @param model Модель для лекции
+     * @param lectureId ID лекции
+     * @return Страница для обновления лекции
+     */
     @GetMapping("/lecture/{id}/update")
     public String updateLecture(Principal principal, Model model, @PathVariable("id") Long lectureId) {
         Optional<Lecture> lectureOp = lectureService.getLectureById(lectureId);
@@ -113,12 +148,25 @@ public class LectureController {
         return "/lecture/update";
     }
 
+    /**
+     * Обновление лекции
+     * @param lectureId ID лекции
+     * @param lecture Лекция
+     * @return Страница лекции
+     */
     @PostMapping("/lecture/{id}/update")
     public String updateLecture(@PathVariable("id") Long lectureId, Lecture lecture) {
         lectureService.updateLecture(lecture, lectureId);
         return "redirect:/lecture/" + lectureId;
     }
 
+    /**
+     * Страница для удаления лекции
+     * @param principal Пользователь
+     * @param model Модель для лекции
+     * @param lectureId ID лекции
+     * @return
+     */
     //    @DeleteMapping("/lecture/{id}/delete") // не работает
     @RequestMapping(value = "/lecture/{id}/delete", method = {RequestMethod.GET, RequestMethod.POST})
     public String deleteLecture(Principal principal, Model model, @PathVariable("id") Long lectureId) {
@@ -140,6 +188,13 @@ public class LectureController {
         return "/lecture/delete";
     }
 
+    /**
+     * Страница пользователей, привязанных к лекции
+     * @param principal Пользователь
+     * @param model Модель для списка лекций
+     * @param lectureId ID лекции
+     * @return Список пользователей, привязянных к лекции
+     */
     @GetMapping("/lecture/{id}/users")
     public String getUserLectures(Principal principal, Model model, @PathVariable("id") Long lectureId) {
         User userActive = (User) userService.loadUserByUsername(principal.getName());
@@ -160,6 +215,12 @@ public class LectureController {
         return "/lecture/users";
     }
 
+    /**
+     * Страница всех лекций с пользователями
+     * @param principal Пользователь
+     * @param model Модель для списка всех лекций по пользователям
+     * @return Страница всех лекций с пользователями
+     */
     @GetMapping("/lectures/users")
     public String getUserLecturesList(Principal principal, Model model) {
         Set<Lecture> lectures = lectureService.getLectures();
