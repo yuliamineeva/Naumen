@@ -27,7 +27,8 @@ public class LectureController {
     }
 
     /**
-     * Страница со списком всех лекций
+     * Страница со списком всех лекций (для админа)
+     *
      * @param principal Пользователь
      * @param model Модель для списка лекций
      * @return Список всех лекций
@@ -48,10 +49,11 @@ public class LectureController {
 
     /**
      * Страница лекции
+     *
      * @param principal Пользователь
      * @param model Модель для лекции
      * @param lectureId Id лекции
-     * @return URL lecture/detail
+     * @return Страница лекции
      */
     @GetMapping(value = "/lecture/{id}")
     public String getLectureById(Principal principal, Model model, @PathVariable("id") Long lectureId) {
@@ -81,9 +83,10 @@ public class LectureController {
 
     /**
      * Обновление статуса лекции на FINISHED
+     *
      * @param lectureId Id лекции
      * @param principal Пользователь
-     * @return Страница лекций пользователя
+     * @return Переход на страницу лекций пользователя
      */
     @PostMapping("/lecture/{id}")
     public String finishStatusLecture(@PathVariable("id") Long lectureId, Principal principal) {
@@ -103,7 +106,10 @@ public class LectureController {
 
     /**
      * Страница создания лекции
-     * @return URL lecture/add"
+     *
+     * @param principal Пользователь
+     * @param model Модель для лекции
+     * @return Страница создания лекции
      */
     @GetMapping("/lecture/create")
     public String createLecture(Principal principal, Model model) {
@@ -115,9 +121,10 @@ public class LectureController {
 
     /**
      * Создание лекции
+     *
      * @param lecture Лекция
      * @param model Модель для лекции
-     * @return Страница с лекциями
+     * @return Переход на страницу с лекциями
      */
     @PostMapping("/lecture/create")
     public String createLecture(Lecture lecture, Model model) {
@@ -128,6 +135,8 @@ public class LectureController {
 
     /**
      * Страница для обновления лекции
+     *
+     * @param principal Пользователь
      * @param model Модель для лекции
      * @param lectureId ID лекции
      * @return Страница для обновления лекции
@@ -150,9 +159,10 @@ public class LectureController {
 
     /**
      * Обновление лекции
+     *
      * @param lectureId ID лекции
      * @param lecture Лекция
-     * @return Страница лекции
+     * @return Страница обновленной лекции
      */
     @PostMapping("/lecture/{id}/update")
     public String updateLecture(@PathVariable("id") Long lectureId, Lecture lecture) {
@@ -162,12 +172,12 @@ public class LectureController {
 
     /**
      * Страница для удаления лекции
+     *
      * @param principal Пользователь
      * @param model Модель для лекции
      * @param lectureId ID лекции
-     * @return
+     * @return Страница с иноформацией об удаленной лекции
      */
-    //    @DeleteMapping("/lecture/{id}/delete") // не работает
     @RequestMapping(value = "/lecture/{id}/delete", method = {RequestMethod.GET, RequestMethod.POST})
     public String deleteLecture(Principal principal, Model model, @PathVariable("id") Long lectureId) {
         User userActive = (User) userService.loadUserByUsername(principal.getName());
@@ -189,7 +199,8 @@ public class LectureController {
     }
 
     /**
-     * Страница пользователей, привязанных к лекции
+     * Страница пользователей, привязанных к лекции (для админа)
+     *
      * @param principal Пользователь
      * @param model Модель для списка лекций
      * @param lectureId ID лекции
@@ -216,7 +227,8 @@ public class LectureController {
     }
 
     /**
-     * Страница всех лекций с пользователями
+     * Страница всех лекций с пользователями (для админа)
+     *
      * @param principal Пользователь
      * @param model Модель для списка всех лекций по пользователям
      * @return Страница всех лекций с пользователями

@@ -9,21 +9,27 @@ import org.springframework.web.bind.annotation.PostMapping;
 import ru.naumen.javakids.model.User;
 import ru.naumen.javakids.services.UserService;
 
-/**
- * @author avzhukov
- * @since 17.03.2022
- */
 @Controller
 public class RegistrationController {
 
     @Autowired
     private UserService userService;
 
+    /**
+     * Страница регистрации
+     * @return Страница регистрации
+     */
     @GetMapping("/registration")
     public String registrationUser() {
         return "/user/registration";
     }
 
+    /**
+     * Регистрация нового пользователя
+     * @param user Пользователь
+     * @param model Модель пользователя
+     * @return Переход на страницу входа или вовзрат на страницу регистрации в случае ошибки
+     */
     @PostMapping("/registration")
     public String addUser(User user, Model model) {
 
