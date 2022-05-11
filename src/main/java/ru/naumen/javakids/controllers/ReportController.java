@@ -32,6 +32,11 @@ public class ReportController {
         this.userService = userService;
     }
 
+    /**
+     * Загрузка списка пользователей в Excel
+     *
+     * @param response объект http сервлета
+     */
     @GetMapping("/users/export/excel")
     public void exportToExcel(HttpServletResponse response) throws IOException {
         configureResponse(response, "users");
@@ -40,6 +45,11 @@ public class ReportController {
         excelExporter.exportToExcel(response, "users");
     }
 
+    /**
+     * Загрузка списка лекций в Excel
+     *
+     * @param response объект http сервлета
+     */
     @GetMapping("/lectures/export/excel")
     public void exportToExcelLectures(HttpServletResponse response) throws IOException {
         configureResponse(response, "lectures");
@@ -50,6 +60,11 @@ public class ReportController {
         excelExporter.exportToExcel(response, "lectures");
     }
 
+    /**
+     * Загрузка списка всех лекций по всем пользователям в Excel
+     *
+     * @param response объект http сервлета
+     */
     @GetMapping("/lectures/users/export/excel")
     public void exportToExcelUserLectures(HttpServletResponse response) throws IOException {
         configureResponse(response, "userlectures");
@@ -60,6 +75,12 @@ public class ReportController {
         excelExporter.exportToExcel(response, "userLectures");
     }
 
+    /**
+     * Создание параметров файла для выгрузки
+     *
+     * @param response объект http сервлета
+     * @param filename имя файла
+     */
     private void configureResponse(HttpServletResponse response, String filename) {
         response.setContentType("application/octet-stream");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");

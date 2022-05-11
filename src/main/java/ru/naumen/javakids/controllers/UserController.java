@@ -45,6 +45,12 @@ public class UserController {
         return "index";
     }
 
+    /**
+     * Страница ошибки отказа в доступе
+     * @param principal Пользователь
+     * @param model Информация по пользователю для отображения
+     * @return Главная страница
+     */
     @GetMapping("/403")
     public String accessDenied(Principal principal, Model model) {
         User userActive = (User) userService.loadUserByUsername(principal.getName());
@@ -112,8 +118,8 @@ public class UserController {
     }
 
     /**
-     * Возвращает всех пользователей
-     * @principal Пользователь
+     * Возвращает всех пользователей (для админа)
+     * @param principal Пользователь
      * @param model Модель для списка пользователей
      * @return URL user/list
      */
