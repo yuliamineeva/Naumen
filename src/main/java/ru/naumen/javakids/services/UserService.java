@@ -13,10 +13,6 @@ import ru.naumen.javakids.repository.UserRepo;
 
 import java.util.*;
 
-/**
- * @author avzhukov
- * @since 17.03.2022
- */
 @Service
 public class UserService implements UserDetailsService {
 

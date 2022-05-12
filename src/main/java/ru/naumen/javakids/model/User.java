@@ -8,10 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.*;
 
-/**
- * @author avzhukov
- * @since 17.03.2022
- */
 @Entity
 @Getter
 @Setter
