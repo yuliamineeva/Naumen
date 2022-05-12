@@ -35,7 +35,7 @@ public class ReportController {
     /**
      * Загрузка списка пользователей в Excel
      *
-     * @param response объект http сервлета
+     * @param response ответ сервера
      */
     @GetMapping("/users/export/excel")
     public void exportToExcel(HttpServletResponse response) throws IOException {
@@ -48,7 +48,7 @@ public class ReportController {
     /**
      * Загрузка списка лекций в Excel
      *
-     * @param response объект http сервлета
+     * @param response ответ сервера
      */
     @GetMapping("/lectures/export/excel")
     public void exportToExcelLectures(HttpServletResponse response) throws IOException {
@@ -63,7 +63,7 @@ public class ReportController {
     /**
      * Загрузка списка всех лекций по всем пользователям в Excel
      *
-     * @param response объект http сервлета
+     * @param response ответ сервера
      */
     @GetMapping("/lectures/users/export/excel")
     public void exportToExcelUserLectures(HttpServletResponse response) throws IOException {
@@ -78,7 +78,7 @@ public class ReportController {
     /**
      * Создание параметров файла для выгрузки
      *
-     * @param response объект http сервлета
+     * @param response ответ сервера
      * @param filename имя файла
      */
     private void configureResponse(HttpServletResponse response, String filename) {
