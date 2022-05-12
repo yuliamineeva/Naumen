@@ -61,7 +61,11 @@ public class UserService implements UserDetailsService {
             user.setId(id);
             user.setActive(userOp.get().isActive());
             user.setRoles(userOp.get().getRoles());
+
+            // Обновляем пароль пользователю, если он изменился
+            if (!user.getPassword().equals(userOp.get().getPassword()))
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+
             userRepo.save(user);
             return userRepo.findById(id);
         } else {
