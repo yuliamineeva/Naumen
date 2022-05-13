@@ -48,7 +48,7 @@ public class UserLecture {
     }
 
     /**
-     * The class Id is composite primary key for UserLecture
+     * Класс Id является составным ключом для UserLecture
      */
     @Embeddable
     @Data
