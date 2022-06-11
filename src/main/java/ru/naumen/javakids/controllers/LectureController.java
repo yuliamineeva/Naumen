@@ -44,7 +44,7 @@ public class LectureController {
         model.addAttribute("principal", userActive);
         if (userActive.getRoles().contains(Role.ROLE_ADMIN)) model.addAttribute("master", Role.ROLE_ADMIN);
 
-        return "/lecture/list";
+        return "list.html";
     }
 
     /**
@@ -76,9 +76,9 @@ public class LectureController {
                 model.addAttribute("userlecture", userLecture);
             }
         } else {
-            return "/error/page";
+            return "page.html";
         }
-        return "lecture/detail";
+        return "detail.html";
     }
 
     /**
@@ -99,7 +99,7 @@ public class LectureController {
             userLecture.setStatus(Status.FINISHED);
             userLectureService.saveUserLecture(userLecture);
         } else {
-            return "/error/page";
+            return "page.html";
         }
         return "redirect:/user/lectures";
     }
@@ -116,7 +116,7 @@ public class LectureController {
         User userActive = (User) userService.loadUserByUsername(principal.getName());
         model.addAttribute("principal", userActive);
         if (userActive.getRoles().contains(Role.ROLE_ADMIN)) model.addAttribute("master", Role.ROLE_ADMIN);
-        return "/lecture/add";
+        return "add.html";
     }
 
     /**
@@ -148,13 +148,13 @@ public class LectureController {
             Lecture lecture = lectureOp.get();
             model.addAttribute("lecture", lecture);
         } else {
-            return "/error/page";
+            return "page.html";
         }
 
         User userActive = (User) userService.loadUserByUsername(principal.getName());
         model.addAttribute("principal", userActive);
         if (userActive.getRoles().contains(Role.ROLE_ADMIN)) model.addAttribute("master", Role.ROLE_ADMIN);
-        return "/lecture/update";
+        return "update.html";
     }
 
     /**
@@ -191,11 +191,11 @@ public class LectureController {
             }
             lectureService.deleteLecture(lectureId);
         } else {
-            return "/error/page";
+            return "page.html";
         }
         model.addAttribute("principal", userActive);
         if (userActive.getRoles().contains(Role.ROLE_ADMIN)) model.addAttribute("master", Role.ROLE_ADMIN);
-        return "/lecture/delete";
+        return "delete.html";
     }
 
     /**
@@ -218,12 +218,12 @@ public class LectureController {
             userLecturesList.sort(Comparator.comparingLong(userLecture -> userLecture.getUser().getId()));
             model.addAttribute("userlectures", userLecturesList);
         } else {
-            return "/error/page";
+            return "page.html";
         }
 
         model.addAttribute("principal", userActive);
         if (userActive.getRoles().contains(Role.ROLE_ADMIN)) model.addAttribute("master", Role.ROLE_ADMIN);
-        return "/lecture/users";
+        return "users.html";
     }
 
     /**
@@ -248,7 +248,7 @@ public class LectureController {
         User userActive = (User) userService.loadUserByUsername(principal.getName());
         model.addAttribute("principal", userActive);
         if (userActive.getRoles().contains(Role.ROLE_ADMIN)) model.addAttribute("master", Role.ROLE_ADMIN);
-        return "/lecture/users";
+        return "users.html";
     }
 
 }

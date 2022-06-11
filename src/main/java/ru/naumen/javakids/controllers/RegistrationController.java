@@ -21,7 +21,7 @@ public class RegistrationController {
      */
     @GetMapping("/registration")
     public String registrationUser() {
-        return "/user/registration";
+        return "registration.html";
     }
 
     /**
@@ -36,15 +36,15 @@ public class RegistrationController {
         try {
             if (user.getUsername().isEmpty() || user.getPassword().isEmpty() || user.getEmail().isEmpty()) {
                 model.addAttribute("message", "Необходимо заполнить все поля!");
-                return "/user/registration";
+                return "registration.html";
             } else {
                 userService.saveUser(user);
                 model.addAttribute("message", "Пользователь успешно зарегистрирован!");
-                return "/user/login";
+                return "login.html";
             }
         } catch (DataIntegrityViolationException e) {
             model.addAttribute("message", "Пользователь с таким логином или e-mail уже существует!");
-            return "/user/registration";
+            return "registration.html";
         }
     }
 }
