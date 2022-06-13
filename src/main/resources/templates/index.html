@@ -10,35 +10,17 @@
 <th:block th:insert="fragments/common :: header"></th:block>
 <div class="container">
     <div class="row">
-        <div class="col-lg-12 border-dark border-bottom">
+        <div class="mb-3 mt-3">
             <h2 class="text-center">Добро пожаловать, <span th:text="${#authentication.name}"></span> !</h2>
         </div>
     </div>
     <div class="row" sec:authorize="hasRole('ROLE_ADMIN')">
-        <div class="category-option"
-             th:onclick="|window.location.href='@{/lectures}'|">
-            <p class="mb-0">Список всех лекций</p>
+        <div class="category-option">
+            <h4><a th:href="@{/lectures}">Список всех лекций</a></h4><br>
+            <h4><a th:href="@{/lecture/create}">Добавить новую лекцию</a></h4><br>
+            <h4><a th:href="@{/lectures/users}">Прогресс обучения пользователей</a></h4><br>
+            <h4><a th:href="@{/users}">Список всех пользователей</a></h4><br>
         </div>
-        <div class="category-option"
-             th:onclick="|window.location.href='@{/lecture/create}'|">
-            <p class="mb-0">Добавить новую лекцию</p>
-        </div>
-        <div class="category-option"
-             th:onclick="|window.location.href='@{/users}'|">
-            <p class="mb-0">Список всех пользователей</p>
-        </div>
-        <div class="category-option"
-             th:onclick="|window.location.href='@{/lectures/users}'|">
-            <p class="mb-0">Прогресс пользователей</p>
-        </div>
-<!--        <div class="category-option"-->
-<!--             th:onclick="|window.location.href='@{/questions}'|">-->
-<!--            <p class="mb-0">Все вопросы</p>-->
-<!--        </div>-->
-<!--        <div class="category-option"-->
-<!--             th:onclick="|window.location.href='@{/question}'|">-->
-<!--            <p class="mb-0">Добавить вопрос</p>-->
-<!--        </div>-->
     </div>
 </div>
 

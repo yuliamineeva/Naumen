@@ -1,4 +1,13 @@
-{{> /layout/header}}
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <th:block th:insert="~{fragments/common :: meta}"></th:block>
+    <title>Лекции пользователя</title>
+    <th:block th:insert="~{fragments/common :: link}"></th:block>
+</head>
+<body>
+<th:block th:insert="fragments/common :: header"></th:block>
 
 <style>
     table {
@@ -12,27 +21,25 @@
 </style>
 
 <div class="container mt-3">
-    <input type="hidden" id="id" value="{{principal.id}}">
-    <h3>Лекции пользователя {{user.username}}:</h3>
+    <h3>Лекции пользователя <span th:text="${user.username}"></span> :</h3>
     <table>
         <tr>
             <th>Id</th>
             <th>Название</th>
             <th>Статус</th>
-
         </tr>
 
-        {{#userLectures}}
-            <tr>
-                <td>{{id.lectureId}}</td>
-                <td>{{lecture.topic}}</td>
-                <td>{{status}}</td>
-            </tr>
-        {{/userLectures}}
+        <tr th:each="userlecture: ${userLectures}">
+            <td th:text="${userlecture.id.lectureId}"/>
+            <td th:text="${userlecture.lecture.topic}"/>
+            <td th:text="${userlecture.status}"/>
+        </tr>
 
     </table>
     <br><br>
-    <a href="/users">Назад</a> <br>
+    <a th:href="@{'/users'}">Назад</a>
 </div>
 
-{{> /layout/footer}}
+<th:block th:insert="fragments/common :: footer"></th:block>
+</body>
+</html>
