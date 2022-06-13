@@ -42,10 +42,8 @@ public class UserController {
             // Для отображения меню для администратора
             if (userActive.getRoles().contains(Role.ROLE_ADMIN)) model.addAttribute("master", Role.ROLE_ADMIN);
         }
-        return "index.html";
+        return "index";
     }
-
-
 
     /**
      * Страница ошибки отказа в доступе
@@ -60,7 +58,7 @@ public class UserController {
             model.addAttribute("principal", userActive);
             model.addAttribute("msg", " У вас нет прав администратора!");
         }
-        return "403.html";
+        return "/error/403";
     }
 
     /**
@@ -75,7 +73,7 @@ public class UserController {
         model.addAttribute("principal", userActive);
         if (userActive.getRoles().contains(Role.ROLE_ADMIN)) model.addAttribute("master", Role.ROLE_ADMIN);
 
-        return "update.html";
+        return "user/update";
     }
 
     /**
@@ -101,11 +99,11 @@ public class UserController {
     public String getUserDetail(@PathVariable Long id, Model model) {
         User user = userService.loadUserById(id);
         if (user == null) {
-            return "page.html";
+            return "/error/page";
         } else {
             model.addAttribute("principal", user);
             if (user.getRoles().contains(Role.ROLE_ADMIN)) model.addAttribute("master", Role.ROLE_ADMIN);
-            return "detail.html";
+            return "/user/detail";
         }
     }
 
@@ -133,7 +131,7 @@ public class UserController {
         model.addAttribute("principal", userActive);
         if (userActive.getRoles().contains(Role.ROLE_ADMIN)) model.addAttribute("master", Role.ROLE_ADMIN);
 
-        return "list.html";
+        return "/user/list";
     }
 
     /**
@@ -153,7 +151,7 @@ public class UserController {
         model.addAttribute("principal", userActive);
         if (userActive.getRoles().contains(Role.ROLE_ADMIN)) model.addAttribute("master", Role.ROLE_ADMIN);
 
-        return "lectures.html";
+        return "/user/lectures";
     }
 
     /**
@@ -171,7 +169,7 @@ public class UserController {
 
         User user = userService.loadUserById(id);
         if (user == null) {
-            return "page.html";
+            return "/error/page";
         } else {
             model.addAttribute("user", user);
             Set<UserLecture> userLectures = userLectureService.getUserLecturesByUserId(user);
@@ -180,7 +178,7 @@ public class UserController {
             userLecturesList.sort(Comparator.comparingLong(userLecture -> userLecture.getLecture().getId()));
             model.addAttribute("userLectures", userLecturesList);
 
-            return "userlectures.html";
+            return "/user/userlectures";
         }
     }
 

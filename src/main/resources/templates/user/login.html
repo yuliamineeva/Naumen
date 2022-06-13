@@ -19,8 +19,11 @@
             Вы вышли из системы.
         </div>
 
+        <div th:if="${message}" class="alert alert-info">
+            <p th:text="${message}"> </p>
+        </div>
+
         <form th:action="@{/login}" method="post">
-<!--        <form th:action="@{/perform_login}" method="post">-->
             <div><label> Имя пользователя: <input type="text" class="form-control" name="username"/> </label></div>
             <div><label> Пароль: <input type="password" class="form-control" name="password"/> </label></div>
             <div><input type="submit" class="btn btn-secondary" value="Войти"/></div>
