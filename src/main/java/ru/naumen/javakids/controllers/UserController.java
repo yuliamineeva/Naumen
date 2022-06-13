@@ -27,7 +27,7 @@ public class UserController {
     }
 
     /**
-     * Главная страница
+     * Главная страница сайта
      * @param principal Пользователь
      * @param model Информация по пользователю для отображения
      * @return Главная страница
@@ -38,9 +38,6 @@ public class UserController {
         if (userActive != null) {
             // Для отображения имени пользователя
             model.addAttribute("principal", userActive);
-
-            // Для отображения меню для администратора
-            if (userActive.getRoles().contains(Role.ROLE_ADMIN)) model.addAttribute("master", Role.ROLE_ADMIN);
         }
         return "index";
     }
@@ -48,7 +45,7 @@ public class UserController {
     /**
      * Страница ошибки отказа в доступе
      * @param principal Пользователь
-     * @param model Информация по пользователю для отображения
+     * @param model Модель для отображения информации
      * @return Главная страница
      */
     @GetMapping("/403")
@@ -71,13 +68,11 @@ public class UserController {
     public String updateUser(Principal principal, Model model) {
         User userActive = (User) userService.loadUserByUsername(principal.getName());
         model.addAttribute("principal", userActive);
-        if (userActive.getRoles().contains(Role.ROLE_ADMIN)) model.addAttribute("master", Role.ROLE_ADMIN);
-
         return "user/update";
     }
 
     /**
-     * Обновление польователя
+     * Обновление пользователя
      * @param user Пользователь
      * @param id ID пользователя
      * @return Страница с обновленным пользователем
@@ -85,7 +80,6 @@ public class UserController {
     @PostMapping("/user/{id}")
     public String updateUser(@PathVariable Long id, User user) {
         userService.updateUser(id, user);
-
         return "redirect:/user/" + id;
     }
 
@@ -102,7 +96,6 @@ public class UserController {
             return "/error/page";
         } else {
             model.addAttribute("principal", user);
-            if (user.getRoles().contains(Role.ROLE_ADMIN)) model.addAttribute("master", Role.ROLE_ADMIN);
             return "/user/detail";
         }
     }
@@ -129,7 +122,6 @@ public class UserController {
         model.addAttribute("users", users);
         User userActive = (User) userService.loadUserByUsername(principal.getName());
         model.addAttribute("principal", userActive);
-        if (userActive.getRoles().contains(Role.ROLE_ADMIN)) model.addAttribute("master", Role.ROLE_ADMIN);
 
         return "/user/list";
     }
@@ -149,7 +141,6 @@ public class UserController {
         myLecturesList.sort(Comparator.comparingLong(userLecture -> userLecture.getLecture().getId()));
         model.addAttribute("myLectures", myLecturesList);
         model.addAttribute("principal", userActive);
-        if (userActive.getRoles().contains(Role.ROLE_ADMIN)) model.addAttribute("master", Role.ROLE_ADMIN);
 
         return "/user/lectures";
     }
@@ -157,14 +148,13 @@ public class UserController {
     /**
      * Список лекций по конкретному пользователю (у админа)
      * @param principal Пользователь
-     * @param id ID лекции
+     * @param id Id пользователя
      * @param model Модель для списка лекций
      * @return Список лекций по конкретному пользователю
      */
     @GetMapping("/user/{id}/lectures")
     public String getUserLectures(Principal principal, @PathVariable Long id, Model model) {
         User userActive = (User) userService.loadUserByUsername(principal.getName());
-        if (userActive.getRoles().contains(Role.ROLE_ADMIN)) model.addAttribute("master", Role.ROLE_ADMIN);
         model.addAttribute("principal", userActive);
 
         User user = userService.loadUserById(id);
