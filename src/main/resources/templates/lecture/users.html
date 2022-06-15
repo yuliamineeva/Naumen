@@ -1,4 +1,13 @@
-{{> /layout/header}}
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <th:block th:insert="~{fragments/common :: meta}"></th:block>
+    <title>Прогресс пользователей</title>
+    <th:block th:insert="~{fragments/common :: link}"></th:block>
+</head>
+<body>
+<th:block th:insert="fragments/common :: header"></th:block>
 
 <style>
     table {
@@ -12,53 +21,46 @@
 </style>
 
 <div class="container mt-3">
-    <input type="hidden" id="id" value="{{principal.id}}">
+    <!--    <input type="hidden" id="id" value="{{principal.id}}">-->
 
-    {{^currentlecture}}
-        <div class="mb-3">
-            Прогресс обучения пользователей  <a href="/lectures/users/export/excel"> Загрузить в Excel</a><br>
-        </div>
-    {{/currentlecture}}
+    <div class="mb-3" th:if="${currentlecture == null}">
+        Прогресс обучения пользователей <a href="/lectures/users/export/excel"> Загрузить в Excel</a><br>
+    </div>
 
-    {{#currentlecture}}
-        <div class="mb-3">
-            Информация о лекции "{{currentlecture.topic}}" <br>
-            Детализация по пользователям
-        </div>
-    {{/currentlecture}}
+    <div class="mb-3" th:if="${currentlecture != null}">
+        Информация о лекции "<span th:text="${currentlecture.topic}"></span>" <br>
+        Детализация по пользователям
+    </div>
+
     <table>
         <tr>
             <th>Id лекции</th>
-            {{^currentlecture}}
-                <th>Тема лекции</th>
-            {{/currentlecture}}
+            <th th:if="${currentlecture == null}">Тема лекции</th>
             <th>Id пользователя</th>
             <th>Имя пользователя</th>
             <th>Статус лекции</th>
         </tr>
 
-        {{#userlectures}}
-            <tr>
-                <td>{{lecture.id}}</td>
-                {{^currentlecture}}
-                    <td>{{lecture.topic}}</td>
-                {{/currentlecture}}
-                <td>{{user.id}}</td>
-                <td>{{user.username}}</td>
-                <td>{{status}}</td>
-            </tr>
-        {{/userlectures}}
-
+        <tr th:each="userlecture: ${userlectures}">
+            <td th:text="${userlecture.lecture.id}"/>
+            <td th:if="${currentlecture == null}"><span th:text="${userlecture.lecture.topic}"></span></td>
+            <td th:text="${userlecture.user.id}"/>
+            <td th:text="${userlecture.user.username}"/>
+            <td th:text="${userlecture.status}"/>
+        </tr>
     </table>
 
     <br><br>
-    {{#currentlecture}}
-        <a href="/lectures">Назад</a> <br>
-    {{/currentlecture}}
+    <div class="mb-3" th:if="${currentlecture != null}">
+        <a th:href="@{/lectures}">Назад</a>
+    </div>
 
-    {{^currentlecture}}
-        <a href="/">Назад</a> <br>
-    {{/currentlecture}}
+    <div class="mb-3" th:if="${currentlecture == null}">
+        <a th:href="@{/}">Назад</a> <br>
+    </div>
+
 </div>
 
-{{> /layout/footer}}
+<th:block th:insert="fragments/common :: footer"></th:block>
+</body>
+</html>

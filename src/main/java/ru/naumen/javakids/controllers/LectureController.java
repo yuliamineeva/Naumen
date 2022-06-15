@@ -30,7 +30,7 @@ public class LectureController {
      * Страница со списком всех лекций (для админа)
      *
      * @param principal Пользователь
-     * @param model Модель для списка лекций
+     * @param model     Модель для списка лекций
      * @return Список всех лекций
      */
     @GetMapping("/lectures")
@@ -42,7 +42,6 @@ public class LectureController {
 
         User userActive = (User) userService.loadUserByUsername(principal.getName());
         model.addAttribute("principal", userActive);
-        if (userActive.getRoles().contains(Role.ROLE_ADMIN)) model.addAttribute("master", Role.ROLE_ADMIN);
 
         return "/lecture/list";
     }
@@ -51,7 +50,7 @@ public class LectureController {
      * Страница лекции
      *
      * @param principal Пользователь
-     * @param model Модель для лекции
+     * @param model     Модель для лекции
      * @param lectureId Id лекции
      * @return Страница лекции
      */
@@ -59,7 +58,6 @@ public class LectureController {
     public String getLectureById(Principal principal, Model model, @PathVariable("id") Long lectureId) {
         User userActive = (User) userService.loadUserByUsername(principal.getName());
         model.addAttribute("principal", userActive);
-        if (userActive.getRoles().contains(Role.ROLE_ADMIN)) model.addAttribute("master", Role.ROLE_ADMIN);
 
         Optional<Lecture> lectureOp = lectureService.getLectureById(lectureId);
         if (lectureOp.isPresent()) {
@@ -108,14 +106,14 @@ public class LectureController {
      * Страница создания лекции
      *
      * @param principal Пользователь
-     * @param model Модель для лекции
+     * @param model     Модель для лекции
      * @return Страница создания лекции
      */
     @GetMapping("/lecture/create")
     public String createLecture(Principal principal, Model model) {
         User userActive = (User) userService.loadUserByUsername(principal.getName());
         model.addAttribute("principal", userActive);
-        if (userActive.getRoles().contains(Role.ROLE_ADMIN)) model.addAttribute("master", Role.ROLE_ADMIN);
+        model.addAttribute("lecture", new Lecture());
         return "/lecture/add";
     }
 
@@ -123,13 +121,12 @@ public class LectureController {
      * Создание лекции
      *
      * @param lecture Лекция
-     * @param model Модель для лекции
+     * @param model   Модель для лекции
      * @return Переход на страницу с лекциями
      */
     @PostMapping("/lecture/create")
     public String createLecture(Lecture lecture, Model model) {
         lectureService.saveLecture(lecture);
-        model.addAttribute("lecture", lecture);
         return "redirect:/lectures";
     }
 
@@ -137,7 +134,7 @@ public class LectureController {
      * Страница для обновления лекции
      *
      * @param principal Пользователь
-     * @param model Модель для лекции
+     * @param model     Модель для лекции
      * @param lectureId ID лекции
      * @return Страница для обновления лекции
      */
@@ -153,7 +150,6 @@ public class LectureController {
 
         User userActive = (User) userService.loadUserByUsername(principal.getName());
         model.addAttribute("principal", userActive);
-        if (userActive.getRoles().contains(Role.ROLE_ADMIN)) model.addAttribute("master", Role.ROLE_ADMIN);
         return "/lecture/update";
     }
 
@@ -161,7 +157,7 @@ public class LectureController {
      * Обновление лекции
      *
      * @param lectureId ID лекции
-     * @param lecture Лекция
+     * @param lecture   Лекция
      * @return Страница обновленной лекции
      */
     @PostMapping("/lecture/{id}/update")
@@ -174,7 +170,7 @@ public class LectureController {
      * Страница для удаления лекции
      *
      * @param principal Пользователь
-     * @param model Модель для лекции
+     * @param model     Модель для лекции
      * @param lectureId ID лекции
      * @return Страница с иноформацией об удаленной лекции
      */
@@ -194,7 +190,6 @@ public class LectureController {
             return "/error/page";
         }
         model.addAttribute("principal", userActive);
-        if (userActive.getRoles().contains(Role.ROLE_ADMIN)) model.addAttribute("master", Role.ROLE_ADMIN);
         return "/lecture/delete";
     }
 
@@ -202,13 +197,14 @@ public class LectureController {
      * Страница пользователей, привязанных к лекции (для админа)
      *
      * @param principal Пользователь
-     * @param model Модель для списка лекций
+     * @param model     Модель для списка лекций
      * @param lectureId ID лекции
      * @return Список пользователей, привязянных к лекции
      */
     @GetMapping("/lecture/{id}/users")
     public String getUserLectures(Principal principal, Model model, @PathVariable("id") Long lectureId) {
         User userActive = (User) userService.loadUserByUsername(principal.getName());
+        model.addAttribute("principal", userActive);
         Optional<Lecture> lectureOp = lectureService.getLectureById(lectureId);
         if (lectureOp.isPresent()) {
             Lecture lecture = lectureOp.get();
@@ -220,9 +216,6 @@ public class LectureController {
         } else {
             return "/error/page";
         }
-
-        model.addAttribute("principal", userActive);
-        if (userActive.getRoles().contains(Role.ROLE_ADMIN)) model.addAttribute("master", Role.ROLE_ADMIN);
         return "/lecture/users";
     }
 
@@ -230,7 +223,7 @@ public class LectureController {
      * Страница всех лекций с пользователями (для админа)
      *
      * @param principal Пользователь
-     * @param model Модель для списка всех лекций по пользователям
+     * @param model     Модель для списка всех лекций по пользователям
      * @return Страница всех лекций с пользователями
      */
     @GetMapping("/lectures/users")
@@ -247,7 +240,6 @@ public class LectureController {
 
         User userActive = (User) userService.loadUserByUsername(principal.getName());
         model.addAttribute("principal", userActive);
-        if (userActive.getRoles().contains(Role.ROLE_ADMIN)) model.addAttribute("master", Role.ROLE_ADMIN);
         return "/lecture/users";
     }
 
