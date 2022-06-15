@@ -1,45 +1,43 @@
-{{> /layout/header}}
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <th:block th:insert="~{fragments/common :: meta}"></th:block>
+    <title th:text="'Лекция ' + ${lecture.id}"></title>
+    <th:block th:insert="~{fragments/common :: link}"></th:block>
+</head>
+<body>
+<th:block th:insert="fragments/common :: header"></th:block>
+<div class="container">
+    <div class="container mt-3">
+        <form action="#" th:action="@{'/lecture/'+${lecture.id}}" th:object="${userlecture}" method="post">
 
-<div class="container mt-3">
-    <form action="/lecture/{{lecture.id}}" method="post">
-        <input type="hidden" id="id" value="{{lecture.id}}">
-        {{#principal}}
-
-            {{^master}}
-                {{#userlecture}}
-                <div class="mb-3">
-                    Статус лекции: {{userlecture.status}}
+            <div class="mb-3" sec:authorize="isAuthenticated() and !hasRole('ROLE_ADMIN')">
+                <div class="mb-3" th:if="${userlecture != null}">
+                    Статус лекции: <span th:text="${userlecture.status}"></span>
                 </div>
-               {{/userlecture}}
 
-                {{^userlecture}}
-                    <div class="mb-3">
-                        Статус лекции: не определен
-                    </div>
-                {{/userlecture}}
-            {{/master}}
+                <div class="mb-3" th:if="${userlecture == null}">
+                    Статус лекции: не определен
+                </div>
+            </div>
 
             <div class="mb-3 mt-3">
-                <h1>{{lecture.topic}}</h1>
+                <h1><a th:utext="${lecture.topic}"></a></h1>
             </div>
-            <hr />
+            <hr/>
             <div class="mb-3">
-                {{{lecture.content}}}
+                <a th:utext="${lecture.content}"/></a>
             </div>
-                <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
-            {{^master}}
-                <div><input type="submit" class="btn btn-secondary" value="Завершить"/></div>
-            {{/master}}
+            <div class="mb-3" sec:authorize="isAuthenticated() and !hasRole('ROLE_ADMIN')">
+                <input type="submit" class="btn btn-secondary" value="Завершить"/></div>
         </form>
 
-         <br><br>
-            {{#master}}
-    <a href="/lectures">Назад</a> <br>
-            {{/master}}
-            {{^master}}
-    <a href="/user/lectures">Назад</a> <br>
-            {{/master}}
-        {{/principal}}
-</div>
+        <a sec:authorize="isAuthenticated() and hasRole('ROLE_ADMIN')" th:href="@{/lectures}">Назад</a> <br>
+        <a sec:authorize="isAuthenticated() and !hasRole('ROLE_ADMIN')" th:href="@{/user/lectures}">Назад</a> <br>
 
-{{> /layout/footer}}
+    </div>
+</div>
+<th:block th:insert="fragments/common :: footer"></th:block>
+</body>
+</html>

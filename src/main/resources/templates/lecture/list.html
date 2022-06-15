@@ -1,4 +1,13 @@
-{{> /layout/header}}
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <th:block th:insert="~{fragments/common :: meta}"></th:block>
+    <title>Лекции</title>
+    <th:block th:insert="~{fragments/common :: link}"></th:block>
+</head>
+<body>
+<th:block th:insert="fragments/common :: header"></th:block>
 
 <style>
     table {
@@ -13,11 +22,11 @@
 
 <div class="container mt-3">
     <div class="my-3" align="center">
-       Добавить <a href="/lecture/create">новую лекцию</a>
+       Добавить <a th:href="@{/lecture/create}">новую лекцию</a>
     </div>
 
     <h3>Список всех лекций:</h3>
-    <a href="/lectures/export/excel"> Загрузить в Excel</a> <br>
+    <a th:href="@{/lectures/export/excel}"> Загрузить в Excel</a> <br>
 
     <table>
         <tr>
@@ -28,17 +37,17 @@
             <th>Удалить лекцию</th>
         </tr>
 
-        {{#lectures}}
-            <tr>
-                <td>{{id}}</td>
-                <td><a href="/lecture/{{id}}"> {{topic}} </a></td>
-                <td><a href="/lecture/{{id}}/users"> просмотр пользователей </a></td>
-                <td><a href="/lecture/{{id}}/update"> изменить </a></td>
-                <td><a href="/lecture/{{id}}/delete"> удалить </a></td>
+            <tr th:each="lecture: ${lectures}">
+                <td th:text="${lecture.id}"/>
+                <td><a th:href="@{/lecture/{id}(id=${lecture.id})}"> <pre th:text="${lecture.topic}"/></a></td>
+                <td><a th:href="@{/lecture/{id}/users(id=${lecture.id})}"> просмотр пользователей </a></td>
+                <td><a th:href="@{/lecture/{id}/update(id=${lecture.id})}"> изменить </a></td>
+                <td><a th:href="@{/lecture/{id}/delete(id=${lecture.id})}"> удалить </a></td>
             </tr>
-        {{/lectures}}
 
     </table>
 </div>
 
-{{> /layout/footer}}
+<th:block th:insert="fragments/common :: footer"></th:block>
+</body>
+</html>
