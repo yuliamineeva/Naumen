@@ -20,8 +20,9 @@ public class RegistrationController {
      * @return Страница регистрации
      */
     @GetMapping("/registration")
-    public String registrationUser() {
-        return "/user/registration";
+    public String registrationUser(Model model) {
+        model.addAttribute("user", new User());
+        return "user/registration";
     }
 
     /**
@@ -36,15 +37,15 @@ public class RegistrationController {
         try {
             if (user.getUsername().isEmpty() || user.getPassword().isEmpty() || user.getEmail().isEmpty()) {
                 model.addAttribute("message", "Необходимо заполнить все поля!");
-                return "/user/registration";
+                return "user/registration";
             } else {
                 userService.saveUser(user);
                 model.addAttribute("message", "Пользователь успешно зарегистрирован!");
-                return "/user/login";
+                return "user/login";
             }
         } catch (DataIntegrityViolationException e) {
             model.addAttribute("message", "Пользователь с таким логином или e-mail уже существует!");
-            return "/user/registration";
+            return "user/registration";
         }
     }
 }

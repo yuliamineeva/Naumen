@@ -2,6 +2,7 @@ package ru.naumen.javakids.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,9 +28,10 @@ public class UserController {
     }
 
     /**
-     * Главная страница
+     * Главная страница сайта
+     *
      * @param principal Пользователь
-     * @param model Информация по пользователю для отображения
+     * @param model     Информация по пользователю для отображения
      * @return Главная страница
      */
     @GetMapping("/")
@@ -38,17 +40,15 @@ public class UserController {
         if (userActive != null) {
             // Для отображения имени пользователя
             model.addAttribute("principal", userActive);
-
-            // Для отображения меню для администратора
-            if (userActive.getRoles().contains(Role.ROLE_ADMIN)) model.addAttribute("master", Role.ROLE_ADMIN);
         }
         return "index";
     }
 
     /**
      * Страница ошибки отказа в доступе
+     *
      * @param principal Пользователь
-     * @param model Информация по пользователю для отображения
+     * @param model     Модель для отображения информации
      * @return Главная страница
      */
     @GetMapping("/403")
@@ -63,52 +63,60 @@ public class UserController {
 
     /**
      * Страница обновления пользователя
+     *
      * @param principal Пользователь
-     * @param model Информация по пользователю для отображения
+     * @param model     Информация по пользователю для отображения
      * @return URL user/update
      */
     @GetMapping("/user/update")
     public String updateUser(Principal principal, Model model) {
         User userActive = (User) userService.loadUserByUsername(principal.getName());
         model.addAttribute("principal", userActive);
-        if (userActive.getRoles().contains(Role.ROLE_ADMIN)) model.addAttribute("master", Role.ROLE_ADMIN);
-
         return "user/update";
     }
 
     /**
-     * Обновление польователя
+     * Обновление пользователя
+     *
      * @param user Пользователь
-     * @param id ID пользователя
+     * @param id   ID пользователя
      * @return Страница с обновленным пользователем
      */
     @PostMapping("/user/{id}")
     public String updateUser(@PathVariable Long id, User user) {
         userService.updateUser(id, user);
-
         return "redirect:/user/" + id;
     }
 
     /**
      * Страница с информацией по пользователю
-     * @param id ID пользователя
-     * @param model Модель пользователя
+     *
+     * @param id        ID пользователя
+     * @param principal Пользователь текущий
+     * @param model     Модель пользователя
      * @return Страница с информацией по пользователю
      */
     @GetMapping("/user/{id}")
-    public String getUserDetail(@PathVariable Long id, Model model) {
-        User user = userService.loadUserById(id);
-        if (user == null) {
+    public String getUserDetail(@PathVariable Long id, Principal principal, Model model) {
+        User userActive = (User) userService.loadUserByUsername(principal.getName());
+        model.addAttribute("principal", userActive);
+        try {
+            User user = userService.loadUserById(id);
+            if (!user.getId().equals(userActive.getId())) {
+                model.addAttribute("msg", " У вас нет прав для просмотра данной страницы!");
+                return "/error/403";
+            } else {
+                model.addAttribute("principal", user);
+                return "/user/detail";
+            }
+        } catch (UsernameNotFoundException e) {
             return "/error/page";
-        } else {
-            model.addAttribute("principal", user);
-            if (user.getRoles().contains(Role.ROLE_ADMIN)) model.addAttribute("master", Role.ROLE_ADMIN);
-            return "/user/detail";
         }
     }
 
     /**
      * Выход из сессии
+     *
      * @return переход на страницу авторизации
      */
     @GetMapping("/logout")
@@ -119,25 +127,26 @@ public class UserController {
 
     /**
      * Возвращает всех пользователей (для админа)
+     *
      * @param principal Пользователь
-     * @param model Модель для списка пользователей
+     * @param model     Модель для списка пользователей
      * @return URL user/list
      */
     @GetMapping("/users")
-    public String getUsersList(Principal principal, Model model){
+    public String getUsersList(Principal principal, Model model) {
         List<User> users = userService.getUsersList();
         model.addAttribute("users", users);
         User userActive = (User) userService.loadUserByUsername(principal.getName());
         model.addAttribute("principal", userActive);
-        if (userActive.getRoles().contains(Role.ROLE_ADMIN)) model.addAttribute("master", Role.ROLE_ADMIN);
 
         return "/user/list";
     }
 
     /**
      * Список лекций пользователя
+     *
      * @param principal Пользователь
-     * @param model Модель для списка лекций
+     * @param model     Модель для списка лекций
      * @return URL user/lectures
      */
     @GetMapping("/user/lectures")
@@ -149,22 +158,21 @@ public class UserController {
         myLecturesList.sort(Comparator.comparingLong(userLecture -> userLecture.getLecture().getId()));
         model.addAttribute("myLectures", myLecturesList);
         model.addAttribute("principal", userActive);
-        if (userActive.getRoles().contains(Role.ROLE_ADMIN)) model.addAttribute("master", Role.ROLE_ADMIN);
 
-        return "user/lectures";
+        return "/user/lectures";
     }
 
     /**
      * Список лекций по конкретному пользователю (у админа)
+     *
      * @param principal Пользователь
-     * @param id ID лекции
-     * @param model Модель для списка лекций
+     * @param id        Id пользователя
+     * @param model     Модель для списка лекций
      * @return Список лекций по конкретному пользователю
      */
     @GetMapping("/user/{id}/lectures")
     public String getUserLectures(Principal principal, @PathVariable Long id, Model model) {
         User userActive = (User) userService.loadUserByUsername(principal.getName());
-        if (userActive.getRoles().contains(Role.ROLE_ADMIN)) model.addAttribute("master", Role.ROLE_ADMIN);
         model.addAttribute("principal", userActive);
 
         User user = userService.loadUserById(id);
@@ -178,7 +186,7 @@ public class UserController {
             userLecturesList.sort(Comparator.comparingLong(userLecture -> userLecture.getLecture().getId()));
             model.addAttribute("userLectures", userLecturesList);
 
-            return "user/userlectures";
+            return "/user/userlectures";
         }
     }
 

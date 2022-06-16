@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <th:block th:insert="~{fragments/common :: meta}"></th:block>
+
+    <title>Ошибка</title>
+    <style>
+        .red_color {
+            color: red;
+        }
+    </style>
+
+    <th:block th:insert="~{fragments/common :: link}"></th:block>
+</head>
+<body>
+<th:block th:insert="fragments/common :: header"></th:block>
+<div class="container">
+
+    <div class="container mt-3">
+        <h1 class="red_color">Отказано в доступе</h1>
+        <br><br>
+        <h2>Пользователь: <span th:text="${#authentication.name}"></span>!</h2>
+        <h2 th:text="${msg}"/>
+        <hr/>
+
+        <a th:href="@{'/'}">Перейти на главную страницу</a>
+    </div>
+</div>
+
+<th:block th:insert="fragments/common :: footer"></th:block>
+</body>
+</html>

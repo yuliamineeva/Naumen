@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <th:block th:insert="~{fragments/common :: meta}"></th:block>
+    <title>Обновление профиля</title>
+    <th:block th:insert="~{fragments/common :: link}"></th:block>
+</head>
+<body>
+<th:block th:insert="fragments/common :: header"></th:block>
+<div class="container">
+
+    <div class="container mt-3">
+        <form action="#" th:action="@{'/user/'+${principal.id}}" th:object="${principal}" method="post">
+            <div class="mb-3 mt-3">
+                <input type="text" th:field="*{username}" class="form-control" th:value="${principal.username}" name="username" readonly>
+            </div>
+            <div class="mb-3">
+                <input type="password" th:field="*{password}" class="form-control" th:value="${principal.password}" name="password" required>
+            </div>
+            <div class="mb-3">
+                <input type="email" th:field="*{email}" class="form-control" th:value="${principal.email}" name="email" required>
+            </div>
+            <div><input type="submit" class="btn btn-secondary" value="Обновить"/></div>
+        </form>
+    </div>
+</div>
+<th:block th:insert="fragments/common :: footer"></th:block>
+</body>
+</html>

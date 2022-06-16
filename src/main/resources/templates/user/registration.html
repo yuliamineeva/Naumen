@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <th:block th:insert="~{fragments/common :: meta}"></th:block>
+    <th:block th:insert="~{fragments/common :: title}"></th:block>
+    <th:block th:insert="~{fragments/common :: link}"></th:block>
+</head>
+<body>
+<th:block th:insert="fragments/common :: header"></th:block>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-8 offset-sm-2 border-dark shadow bg-white rounded">
+            <h2 style="text-align:center;">Новый пользователь</h2>
+            <div class="alert alert-danger alert-dismissible" th:if="${message}">
+                <p style="color:red;" th:text="${message}"></p>
+            </div>
+
+            <form action="#" th:action="@{/registration}" th:object="${user}"  method="post">
+                <div class="mb-3 mt-3">
+                    <label> Имя пользователя: <input type="text" th:field="*{username}" class="form-control"
+                            required minlength="1" maxlength="20" name="username"/>
+                    </label>
+                </div>
+
+                 <div class="mb-3">
+                     <label> Пароль: <input type="password" th:field="*{password}" class="form-control"
+                              required minlength="1" maxlength="15" name="password"/>
+                     </label>
+                 </div>
+
+                <div class="mb-3">
+                    <label> Email : <input type="email" th:field="*{email}" class="form-control" required name="email"/>
+                    </label>
+                </div>
+
+                <div>
+                    <input type="submit" class="btn btn-secondary" value="Зарегистрироваться"/>
+                    <a class="ml-4" th:href="@{/}">Отмена</a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<th:block th:insert="fragments/common :: footer"></th:block>
+</body>
+</html>

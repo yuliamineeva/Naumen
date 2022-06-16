@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <th:block th:insert="~{fragments/common :: meta}"></th:block>
+    <th:block th:insert="~{fragments/common :: title}"></th:block>
+    <th:block th:insert="~{fragments/common :: link}"></th:block>
+</head>
+<body>
+<th:block th:insert="fragments/common :: header"></th:block>
+<div class="container">
+    <div class="row">
+        <div class="mb-3 mt-3">
+            <h2 class="text-center">Добро пожаловать, <span th:text="${#authentication.name}"></span> !</h2>
+        </div>
+    </div>
+    <div class="row" sec:authorize="hasRole('ROLE_ADMIN')">
+        <div class="category-option">
+            <h4><a th:href="@{/lectures}">Список всех лекций</a></h4><br>
+            <h4><a th:href="@{/lecture/create}">Добавить новую лекцию</a></h4><br>
+            <h4><a th:href="@{/lectures/users}">Прогресс обучения пользователей</a></h4><br>
+            <h4><a th:href="@{/users}">Список всех пользователей</a></h4><br>
+        </div>
+    </div>
+</div>
+
+<th:block th:insert="fragments/common :: footer"></th:block>
+</body>
+</html>

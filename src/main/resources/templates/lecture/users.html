@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <th:block th:insert="~{fragments/common :: meta}"></th:block>
+    <title>Прогресс пользователей</title>
+    <th:block th:insert="~{fragments/common :: link}"></th:block>
+</head>
+<body>
+<th:block th:insert="fragments/common :: header"></th:block>
+
+<style>
+    table {
+        border-collapse: collapse;
+    }
+
+    table, td, th {
+        border: 1px solid #999;
+        padding: 5px;
+    }
+</style>
+
+<div class="container mt-3">
+    <!--    <input type="hidden" id="id" value="{{principal.id}}">-->
+
+    <div class="mb-3" th:if="${currentlecture == null}">
+        Прогресс обучения пользователей <a href="/lectures/users/export/excel"> Загрузить в Excel</a><br>
+    </div>
+
+    <div class="mb-3" th:if="${currentlecture != null}">
+        Информация о лекции "<span th:text="${currentlecture.topic}"></span>" <br>
+        Детализация по пользователям
+    </div>
+
+    <table>
+        <tr>
+            <th>Id лекции</th>
+            <th th:if="${currentlecture == null}">Тема лекции</th>
+            <th>Id пользователя</th>
+            <th>Имя пользователя</th>
+            <th>Статус лекции</th>
+        </tr>
+
+        <tr th:each="userlecture: ${userlectures}">
+            <td th:text="${userlecture.lecture.id}"/>
+            <td th:if="${currentlecture == null}"><span th:text="${userlecture.lecture.topic}"></span></td>
+            <td th:text="${userlecture.user.id}"/>
+            <td th:text="${userlecture.user.username}"/>
+            <td th:text="${userlecture.status}"/>
+        </tr>
+    </table>
+
+    <br><br>
+    <div class="mb-3" th:if="${currentlecture != null}">
+        <a th:href="@{/lectures}">Назад</a>
+    </div>
+
+    <div class="mb-3" th:if="${currentlecture == null}">
+        <a th:href="@{/}">Назад</a> <br>
+    </div>
+
+</div>
+
+<th:block th:insert="fragments/common :: footer"></th:block>
+</body>
+</html>

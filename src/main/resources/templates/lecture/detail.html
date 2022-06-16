@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <th:block th:insert="~{fragments/common :: meta}"></th:block>
+    <title th:text="'Лекция ' + ${lecture.id}"></title>
+    <th:block th:insert="~{fragments/common :: link}"></th:block>
+</head>
+<body>
+<th:block th:insert="fragments/common :: header"></th:block>
+<div class="container">
+    <div class="container mt-3">
+        <form action="#" th:action="@{'/lecture/'+${lecture.id}}" th:object="${userlecture}" method="post">
+
+            <div class="mb-3" sec:authorize="isAuthenticated() and !hasRole('ROLE_ADMIN')">
+                <div class="mb-3" th:if="${userlecture != null}">
+                    Статус лекции: <span th:text="${userlecture.status}"></span>
+                </div>
+
+                <div class="mb-3" th:if="${userlecture == null}">
+                    Статус лекции: не определен
+                </div>
+            </div>
+
+            <div class="mb-3 mt-3">
+                <h1><a th:utext="${lecture.topic}"></a></h1>
+            </div>
+            <hr/>
+            <div class="mb-3">
+                <a th:utext="${lecture.content}"/></a>
+            </div>
+            <div class="mb-3" sec:authorize="isAuthenticated() and !hasRole('ROLE_ADMIN')">
+                <input type="submit" class="btn btn-secondary" value="Завершить"/></div>
+        </form>
+
+        <a sec:authorize="isAuthenticated() and hasRole('ROLE_ADMIN')" th:href="@{/lectures}">Назад</a> <br>
+        <a sec:authorize="isAuthenticated() and !hasRole('ROLE_ADMIN')" th:href="@{/user/lectures}">Назад</a> <br>
+
+    </div>
+</div>
+<th:block th:insert="fragments/common :: footer"></th:block>
+</body>
+</html>

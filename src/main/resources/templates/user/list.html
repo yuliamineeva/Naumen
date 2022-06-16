@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <th:block th:insert="~{fragments/common :: meta}"></th:block>
+    <title>Пользователи</title>
+    <th:block th:insert="~{fragments/common :: link}"></th:block>
+</head>
+<body>
+<th:block th:insert="fragments/common :: header"></th:block>
+
+<style>
+    table {
+        border-collapse: collapse;
+    }
+
+    table, td, th {
+        border: 1px solid #999;
+        padding: 5px;
+    }
+</style>
+
+<div class="container mt-3">
+    <h3>Список всех пользователей:</h3>
+
+    <div class="my-3">
+        <a href="/users/export/excel"> Загрузить в Excel</a><br>
+    </div>
+
+    <table>
+        <tr>
+            <th>Id</th>
+            <th>Имя пользователя</th>
+            <th>Роль</th>
+            <th>email</th>
+            <th>Информация об обучении</th>
+        </tr>
+
+        <tr th:each="user: ${users}">
+            <td th:text="${user.id}"/>
+            <td th:text="${user.username}"/>
+            <td th:text="${user.roles}"/>
+            <td th:text="${user.email}"/>
+            <td><a href="lectures.html" th:href="@{/user/{id}/lectures(id=${user.id})}"> Посмотреть</a></td>
+        </tr>
+
+    </table>
+</div>
+
+<th:block th:insert="fragments/common :: footer"></th:block>
+</body>
+</html>

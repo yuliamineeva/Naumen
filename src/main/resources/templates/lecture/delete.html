@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <th:block th:insert="~{fragments/common :: meta}"></th:block>
+    <title>Удаление лекции</title>
+    <th:block th:insert="~{fragments/common :: link}"></th:block>
+</head>
+<body>
+<th:block th:insert="fragments/common :: header"></th:block>
+
+<div class="container mt-3">
+    <form action="#" th:action="@{/lecture/{id}/delete(id=${lecture.id})}" th:object="${lecture}" method="post">
+        <div class="mb-3 mt-3">
+            Лекция ID <span th:text="${lecture.id}"></span> , тема: <span th:text="${lecture.topic}"></span> удалена
+            <br><br><br><br><br>
+        </div>
+    </form>
+
+    <a th:href="@{/lectures}">Назад</a> <br>
+
+</div>
+
+<th:block th:insert="fragments/common :: footer"></th:block>
+</body>
+</html>
